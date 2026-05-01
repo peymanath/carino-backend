@@ -1,0 +1,11 @@
+set -euo pipefail
+
+# pnpm turbo run lint || {
+#   echo "❌ pre-push: lint failed"
+#   exit 1
+# }
+
+# pnpm turbo run format || {
+#   echo "❌ pre-push: format failed"
+#   exit 1
+# }

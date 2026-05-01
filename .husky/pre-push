@@ -1,0 +1,6 @@
+set -euo pipefail
+
+# pnpm turbo run build || {
+#   echo "❌ pre-push: build failed"
+#   exit 1
+# }

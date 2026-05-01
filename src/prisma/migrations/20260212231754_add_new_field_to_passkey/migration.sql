@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "user_passkey" ADD COLUMN     "backedUp" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "deviceType" INTEGER NOT NULL DEFAULT 0;

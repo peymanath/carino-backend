@@ -1,0 +1,15 @@
+model Media {
+  id        Int           @id @default(autoincrement())
+  url       String
+  mimeType  String?
+  size      Int?
+  type      String?
+  alt       String?
+  isPublic  Boolean       @default(true)
+  isDeleted Boolean       @default(false)
+  userId    Int
+  uploader  User          @relation(name: "UserToMedia", fields: [userId], references: [id])
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @default(now()) @updatedAt
+  users     UserProfile[]
+}
