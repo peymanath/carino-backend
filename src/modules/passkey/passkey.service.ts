@@ -119,7 +119,7 @@ export class PasskeyService {
     });
 
     const options = await generateRegistrationOptions({
-      rpName: 'Karvanak',
+      rpName: 'Baarg-Better-Mood',
       rpID: registerEnv.RP_ID || 'localhost',
       userID: Buffer.from(user.id.toString()),
       userName: user.mobile,

@@ -8,7 +8,7 @@ export class PasskeyRegistrationOptionsResponseDto implements PublicKeyCredentia
   challenge: string;
 
   @ApiProperty({
-    example: { name: 'Karvanak', id: 'localhost' },
+    example: { name: 'Baarg-Better-Mood', id: 'localhost' },
   })
   rp: PublicKeyCredentialCreationOptionsJSON['rp'];
 
