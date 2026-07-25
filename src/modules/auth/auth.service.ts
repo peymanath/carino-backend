@@ -200,7 +200,7 @@ export class AuthService {
     });
 
     // تخصیص پرمیشن های پیش فرض
-    this.permissionsService.assignDefaultPermissions(newUser.id);
+    await this.permissionsService.assignDefaultPermissions(newUser.id);
 
     return this.finishAuth(newUser, true, MESSAGES.AUTH_REGISTER_SUCCESS);
   }
