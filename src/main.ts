@@ -51,8 +51,8 @@ import { registerEnv } from './config/env.config';
   if (registerEnv.IS_DEVELOPMENT) {
     // Add Bearer auth so consumers can authorize with JWT in Swagger UI
     const swaggerConfig = new DocumentBuilder()
-      .setTitle('Baarg (Better Mood) API')
-      .setDescription('API documentation for the Baarg (Better Mood) application')
+      .setTitle('Carino API')
+      .setDescription('API documentation for the Carino application')
       .setVersion('1.0')
       .addBearerAuth({
         type: 'http',
@@ -78,7 +78,7 @@ import { registerEnv } from './config/env.config';
 
     // Serve Swagger UI at /docs
     SwaggerModule.setup('/docs', app, swaggerDocument, {
-      customSiteTitle: 'Baarg (Better Mood) API Docs',
+      customSiteTitle: 'Carino API Docs',
       jsonDocumentUrl: 'docs/export/data/swagger/swagger.json',
       swaggerOptions: {
         persistAuthorization: true,
