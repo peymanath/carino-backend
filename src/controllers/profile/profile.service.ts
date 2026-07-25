@@ -1,11 +1,11 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
-import { PrismaService } from '../database/prisma.service';
+import { PrismaService } from '../../modules/database/prisma.service';
 import { StandardResponseDto } from '../../shared/dto';
 import { ProfileDto, ProfileImageUploadDto } from './interface/profile.interface';
 import { UpdateProfileDto } from './dto/profile.dto';
 import { MESSAGES } from '../../shared/errors';
-import { StorageService } from '../storage/storage.service';
-import { EnumStorageBucket } from '../storage/enums/storage.enum';
+import { StorageService } from '../../modules/storage/storage.service';
+import { EnumStorageBucket } from '../../modules/storage/enums/storage.enum';
 
 @Injectable()
 export class ProfileService {

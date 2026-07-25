@@ -4,7 +4,7 @@ import { GenerateCaptchaDto, ReGenerateCaptchaDto, VerifyCaptchaDto } from "./dt
 import * as svgCaptcha from "svg-captcha";
 import { optimize, Output } from "svgo";
 import { randomUUID } from "crypto";
-import { RedisService } from "../cache/redis.service";
+import { RedisService } from "../../modules/cache/redis.service";
 import { EnumRedisDatabase } from '../../shared/enums/EnumRedisDatabase';
 import { buildRedisKey } from '../../shared/utils';
 import { EnumRedisKey } from '../../shared/enums/EnumRedisKey';

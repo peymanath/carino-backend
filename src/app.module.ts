@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { AuthModule } from './modules/auth/auth.module';
-import { UsersModule } from './modules/users/users.module';
+import { AuthModule } from './controllers/auth/auth.module';
+import { UsersModule } from './controllers/users/users.module';
 import { RedisModule } from './modules/cache/redis.module';
 import { PrismaModule } from './modules/database/prisma.module';
-import { PermissionsModule } from './modules/permissions/permissions.module';
+import { PermissionsModule } from './controllers/permissions/permissions.module';
 import { envConfig, redisConfig } from './config/env.config';
-import { ProfileModule } from './modules/profile/profile.module';
+import { ProfileModule } from './controllers/profile/profile.module';
 
 @Module({
   imports: [
@@ -16,9 +16,10 @@ import { ProfileModule } from './modules/profile/profile.module';
     }),
     PrismaModule,
     RedisModule,
+
     AuthModule,
-    UsersModule,
     ProfileModule,
+    UsersModule,
     PermissionsModule,
     // SmsManagerModule,
     // StorageModule,

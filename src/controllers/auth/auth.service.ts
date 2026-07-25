@@ -1,12 +1,12 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '../database/prisma.service';
-import { RedisService } from '../cache/redis.service';
+import { PrismaService } from '../../modules/database/prisma.service';
+import { RedisService } from '../../modules/cache/redis.service';
 import { User, UserProfile } from '@prisma/client';
 import { EnumRedisDatabase } from '../../shared/enums/EnumRedisDatabase';
 import { buildRedisKey } from '../../shared/utils';
 import { EnumRedisKey } from '../../shared/enums/EnumRedisKey';
 import { OTPVerificationResultDto } from './dto/auth-otp-verify.dto';
-import { JwtTokenService } from '../jwt/jwt-token.servise';
+import { JwtTokenService } from '../../modules/jwt/jwt-token.servise';
 import { StandardResponseDto } from '../../shared/dto';
 import { JwtStandardClaims } from '../../shared/interfaces/jwt-standard-claims.interface';
 import { MESSAGES } from '../../shared/errors';
@@ -201,6 +201,9 @@ export class AuthService {
 
     // تخصیص پرمیشن های پیش فرض
     await this.permissionsService.assignDefaultPermissions(newUser.id);
+
+    // تاخیر برای دریافت دیتا
+    await new Promise(r => setTimeout(() => r, 1000));
 
     return this.finishAuth(newUser, true, MESSAGES.AUTH_REGISTER_SUCCESS);
   }

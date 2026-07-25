@@ -41,6 +41,7 @@
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/swagger": "^11.0.3",
     "@prisma/client": "^6.14.0",
+    "@scalar/nestjs-api-reference": "^1.2.11",
     "@simplewebauthn/server": "^13.2.2",
     "axios": "^1.13.2",
     "axios-cookiejar-support": "^6.0.4",
@@ -60,8 +61,8 @@
     "svg-captcha": "^1.4.0",
     "svgo": "^4.0.0",
     "swagger-ui-express": "^5.0.1",
-    "tsconfig-paths": "^4.2.0",
-    "tough-cookie": "^6.0.0"
+    "tough-cookie": "^6.0.0",
+    "tsconfig-paths": "^4.2.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^11.0.0",

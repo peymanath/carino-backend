@@ -8,6 +8,7 @@ import { ProblemDetailsDto } from './shared/dto/ProblemDetails.dto';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { TransformDateInterceptor } from './shared/interceptors/TransformDateInterceptor';
 import { registerEnv } from './config/env.config';
+import { apiReference } from '@scalar/nestjs-api-reference';
 
 (async (): Promise<void> => {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -54,12 +55,17 @@ import { registerEnv } from './config/env.config';
       .setTitle('Carino API')
       .setDescription('API documentation for the Carino application')
       .setVersion('1.0')
+      .addTag('Site Authentication')
+      .addTag('Panel Users')
+      .addTag('Site Profile')
+      .addTag('Panel Permissions')
       .addBearerAuth({
         type: 'http',
         scheme: 'bearer',
         bearerFormat: 'JWT',
         description: "Paste your JWT here (without 'Bearer ' prefix).",
       })
+
       .build();
 
     // Include extra models so they appear in the schema
@@ -73,10 +79,19 @@ import { registerEnv } from './config/env.config';
       jsonDocumentUrl: 'docs/export/data/swagger/swagger.json',
       swaggerOptions: {
         persistAuthorization: true,
+        tagsSorter: (a: string, b: string) => 0,
       },
       customCssUrl: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.17.14/swagger-ui.min.css',
       customJs: ['https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.17.14/swagger-ui-bundle.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.17.14/swagger-ui-standalone-preset.min.js'],
     });
+
+    // Scalar API Reference
+    app.use(
+      '/reference',
+      apiReference({
+        content: swaggerDocument,
+      })
+    );
   }
 
   // Prefer explicit numeric port with fallback

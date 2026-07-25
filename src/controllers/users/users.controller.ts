@@ -6,9 +6,11 @@ import { User } from '@prisma/client';
 import { Permissions } from '../../shared/decorators/permissions.decorator';
 import { HasAuthentication } from '../../shared/decorators/auth-swagger.decorator';
 import { PERMISSIONS } from 'src/shared/permissions/permissions';
+import { ApiTags } from '@nestjs/swagger';
 
 @HasAuthentication()
-@Controller('users')
+@ApiTags("Panel Users")
+@Controller('panel/users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 

@@ -1,6 +1,6 @@
 import { Controller, Get, Body, HttpCode, HttpStatus, Put, Req, Post, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { StandardResponseDto } from '../../shared/dto';
-import { ApiBody, ApiConsumes, ApiOkResponse } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ProfileService } from './profile.service';
 import { UpdateProfileDto } from './dto/profile.dto';
 import { ProfileDto, ProfileImageUploadDto } from './interface/profile.interface';
@@ -10,6 +10,7 @@ import { Permissions } from 'src/shared/decorators/permissions.decorator';
 import { PERMISSIONS } from 'src/shared/permissions/permissions';
 
 @HasAuthentication()
+@ApiTags("Site Profile")
 @Controller('profile')
 export class ProfileController {
   constructor(private readonly usersService: ProfileService) {}
@@ -39,10 +40,6 @@ export class ProfileController {
         },
       },
     },
-  })
-  @ApiOkResponse({
-    description: 'Upload Image for profile user',
-    type: ProfileImageUploadDto,
   })
   @Permissions(PERMISSIONS.PROFILE_UPLOAD_AVATAR)
   @HttpCode(HttpStatus.CREATED)
