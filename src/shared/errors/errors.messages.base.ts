@@ -44,18 +44,6 @@ export const MESSAGES_BASE = {
   // SMS
   SMS_MANAGER: 'خطایی در Sms Provider رخ داد.',
 
-  // Passkey
-  PASSKEY_REGISTRATION_SESSION_EXPIRED: 'جلسهٔ ثبت PassKey منقضی شده یا یافت نشد.',
-  PASSKEY_REGISTRATION_VERIFICATION_FAILED: 'ثبت PassKey به درستی انجام نشد.',
-  PASSKEY_REGISTRATION_AAGUID_NOTFOUND: 'AAGUID PASSKEY یافت نشد. ثبت PassKey به درستی انجام نشد.',
-  PASSKEY_REGISTRATION_ORIGIN_MISMATCH: 'مبدا پاسخ ثبت نام مطابقت ندارد. لطفاً از یک مرورگر معتبر استفاده کنید.',
-  PASSKEY_REGISTRATION_RESPONSE_USED: 'این پاسخ قبلاً استفاده شده است. لطفاً دوباره تلاش کنید.',
-  PASSKEY_REGISTRATION_CHALLENGE_MISMATCH: 'چالش معتبر نیست یا منقضی شده است. لطفاً دوباره تلاش کنید.',
-  PASSKEY_REGISTRATION_INVALID_ATTESTATION: 'فرمت تأیید هویت نامعتبر است.',
-  PASSKEY_REGISTRATION_UNKNOWN_ERROR: 'خطایی در ثبت PassKey رخ داد. لطفاً دوباره تلاش کنید.',
-  PASSKEY_REGISTRATION_NOTFOUND: 'Passkey یافت نشد.',
-  PASSKEY_REGISTRATION_FORBIDDEN: 'شما اجازه حذف این Passkey را ندارید.',
-
   // Prisma
   PRISMA_CODE_P2000: "طول داده واردشده برای ستون '{target}' بیش از حد مجاز است.",
   PRISMA_CODE_P2001: 'رکورد مورد نیاز برای رابطه یافت نشد.',

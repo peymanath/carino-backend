@@ -7,7 +7,7 @@
     "dev:dev": "env-cmd -f .env.development  nest start --watch",
     "dev:prod": "env-cmd -f .env.production  nest start --watch",
     "build": "nest build",
-    "vercel-build": "prisma generate && prisma migrate deploy",
+    "vercel-build": "pnpm prisma:generate && pnpm prisma:deploy && pnpm prisma:seed",
     "start": "nest start",
     "format": "prettier --write .",
     "lint": "eslint . --fix",
@@ -17,12 +17,14 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:migrate:create": "prisma migrate --create-only",
     "database:dev": "prisma migrate reset && prisma generate && prisma migrate dev",
+    "prisma:seed": "prisma db seed",
     "key:base64": "bash -lc \"sed -i -E '/^JWT_PRIVATE_B64=/d; /^JWT_PUBLIC_B64=/d' key/base64.txt && printf 'JWT_PRIVATE_B64=%s\\nJWT_PUBLIC_B64=%s\\n' \\\"$(base64 -w 0 key/private.pem)\\\" \\\"$(base64 -w 0 key/public.pem)\\\" >> key/base64.txt\"",
     "clean": " find . -type d \\( -name dist -o -name .next -o -name .turbo -o -name node_modules -o -name .svelte-kit \\) -prune -exec rm -rf '{}' + && find . -name pnpm-lock.yaml -exec rm -f '{}' +",
     "prepare": "husky"
   },
   "prisma": {
-    "schema": "./src/prisma"
+    "schema": "./src/prisma",
+    "seed": "tsx src/prisma/seeds/index.ts"
   },
   "packageManager": "pnpm@10.23.0",
   "engines": {

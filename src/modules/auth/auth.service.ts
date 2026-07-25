@@ -9,7 +9,6 @@ import { OTPVerificationResultDto } from './dto/auth-otp-verify.dto';
 import { JwtTokenService } from '../jwt/jwt-token.servise';
 import { StandardResponseDto } from '../../shared/dto';
 import { JwtStandardClaims } from '../../shared/interfaces/jwt-standard-claims.interface';
-import { SessionService } from '../session/session.service';
 import { MESSAGES } from '../../shared/errors';
 import { registerEnv } from '../../config/env.config';
 import { AuthCompleteProfileDto, AuthCompleteProfileResultDto } from './dto/auth-complete-profile.dto';
@@ -26,7 +25,6 @@ export class AuthService {
     private readonly prisma: PrismaService,
     private readonly redis: RedisService,
     private readonly jwt: JwtTokenService,
-    private readonly session: SessionService,
     private readonly permissionsService: PermissionsService
   ) {}
 
@@ -119,17 +117,11 @@ export class AuthService {
   }
 
   private async issueTokens(user: User): Promise<ISessionToken> {
-    const sessionId = await this.session.upsertFromRequest(user.id);
-
-    if (!sessionId || sessionId === null) {
-      return { accessToken: '', refreshToken: '', sessionId: '', exp: 0 } as ISessionToken;
-    }
-
     const payload: JwtStandardClaims = { sub: user.id };
     const accessToken = this.jwt.encode<typeof payload>(payload, AuthService.EXPIRE_TIME_TOKEN);
     const refreshToken = this.jwt.encode<typeof payload>(payload, AuthService.EXPIRE_TIME_TOKEN);
 
-    return { accessToken, refreshToken, sessionId, exp: Date.now() + AuthService.EXPIRE_TIME_TOKEN };
+    return { accessToken, refreshToken, exp: Date.now() + AuthService.EXPIRE_TIME_TOKEN };
   }
 
   private async loadProfile(userId: number) {
@@ -167,7 +159,6 @@ export class AuthService {
     return new StandardResponseDto({
       message,
       data: {
-        isFullLogin: tokens.exp === 0,
         isNewUser,
         profile: profile
           ? {

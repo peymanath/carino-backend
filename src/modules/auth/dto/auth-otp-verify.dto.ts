@@ -1,4 +1,3 @@
-import { StandardResponseDto } from '../../../shared/dto';
 import { ISessionToken } from '../../../types';
 import { ApiProperty } from '@nestjs/swagger';
 import { User, UserProfile, Media } from '@prisma/client';
@@ -36,14 +35,11 @@ export class OTPVerificationResultDto {
     description: 'Indicates if the user has reached the maximum number of devices.',
     example: false,
   })
-  isFullLogin!: boolean;
-
   @ApiProperty({
     description: 'Access and refresh tokens along with expiration time.',
     example: {
       accessToken: 'access-token-here',
       refreshToken: 'refresh-token-here',
-      sessionId: 'refresh-token-here',
       exp: 1637105062000,
     },
   })

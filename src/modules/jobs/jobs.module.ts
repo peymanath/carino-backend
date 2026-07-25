@@ -3,8 +3,7 @@ import { BullModule } from '@nestjs/bullmq';
 import { JobsService } from './jobs.service';
 import { RedisService } from '../cache/redis.service';
 import { ApiCallerBomberJob } from './jobs.processor';
-import { ApiCallerBomberService } from './definitions/api-caller-bomber/api-caller-bomber.service';
-import { CrawlerBomberService } from './definitions/crawler/crawler.service';
+// import { ApiCallerBomberService } from './definitions/api-caller-bomber/api-caller-bomber.service';
 
 @Module({
   imports: [
@@ -31,7 +30,9 @@ import { CrawlerBomberService } from './definitions/crawler/crawler.service';
       name: 'jobs',
     }),
   ],
-  providers: [JobsService, ApiCallerBomberJob, ApiCallerBomberService, CrawlerBomberService],
+  providers: [JobsService, ApiCallerBomberJob, 
+    // ApiCallerBomberService
+  ],
   exports: [JobsService],
 })
 export class JobsModule {}

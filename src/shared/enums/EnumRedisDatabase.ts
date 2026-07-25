@@ -1,9 +1,9 @@
 export enum EnumRedisDatabase {
   OTP_CACHE = 0,
-  USER_SESSION_CACHE = 1,
+  _USER_SESSION_CACHE = 1,
   CAPTCHA = 2,
-  RESULT_CRAWLER = 3,
-  PASSKEY = 4,
+  _RESULT_CRAWLER = 3,
+  _PASSKEY = 4,
   _CART_CACHE = 5,
   _PAYMENT_CACHE = 6,
   _NOTIFICATION_CACHE = 7,

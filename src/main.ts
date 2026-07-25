@@ -60,15 +60,6 @@ import { registerEnv } from './config/env.config';
         bearerFormat: 'JWT',
         description: "Paste your JWT here (without 'Bearer ' prefix).",
       })
-      .addApiKey(
-        {
-          type: 'apiKey',
-          name: 'session',
-          in: 'header',
-          description: 'Enter your session ID',
-        },
-        'session'
-      )
       .build();
 
     // Include extra models so they appear in the schema

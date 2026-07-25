@@ -2,7 +2,6 @@ import { ExecutionContext, ForbiddenException, Injectable, Scope, UnauthorizedEx
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 import { DECORATOR_PERMISSIONS_KEY } from '../decorators/permissions.decorator'; // adjust import path if needed
-import { SessionService } from '../../modules/session/session.service';
 
 type PermissionShape = string | { key: string };
 
@@ -10,7 +9,6 @@ type PermissionShape = string | { key: string };
 export class JwtAuthGuard extends AuthGuard('jwt') {
   constructor(
     private readonly reflector: Reflector,
-    private readonly sessionService: SessionService
   ) {
     super();
   }
@@ -22,23 +20,10 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
     const req = context.switchToHttp().getRequest();
 
-    const sessionId = req.headers['session'] as string | undefined;
-    if (!sessionId) {
-      throw new UnauthorizedException('SessionId ارسال نشده است.');
-    }
-
     const user = req.user;
     if (!user?.id) {
       throw new UnauthorizedException('کاربر معتبر نیست.');
     }
-
-    const hasSession = await this.sessionService.findUserSessionBySessionId(user.id, sessionId);
-
-    if (!hasSession) {
-      throw new UnauthorizedException('سشن معتبر نیست یا منقضی شده است.');
-    }
-
-    req.session = hasSession;
 
     // At this point, req.user should already be set by JwtStrategy.validate
     this.enforcePermissions(context);
