@@ -60,7 +60,9 @@
     "svgo": "^4.0.0",
     "swagger-ui-express": "^5.0.1",
     "tsconfig-paths": "^4.2.0",
-    "tough-cookie": "^6.0.0",
+    "tough-cookie": "^6.0.0"
+  },
+  "devDependencies": {
     "@nestjs/cli": "^11.0.0",
     "@nestjs/schematics": "^11.0.0",
     "@swc/cli": "^0.6.0",
