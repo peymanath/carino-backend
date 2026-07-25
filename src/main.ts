@@ -8,6 +8,7 @@ import { ProblemDetailsDto } from './shared/dto/ProblemDetails.dto';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { TransformDateInterceptor } from './shared/interceptors/TransformDateInterceptor';
 import { registerEnv } from './config/env.config';
+// import { apiReference } from '@scalar/nestjs-api-reference';
 
 (async (): Promise<void> => {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -85,14 +86,12 @@ import { registerEnv } from './config/env.config';
     });
 
     // Scalar API Reference
-    const { apiReference } = await import('@scalar/nestjs-api-reference');
-
-    app.use(
-      '/reference',
-      apiReference({
-        url: '/docs/export/data/swagger/swagger.json',
-      })
-    );
+    // app.use(
+    //   '/reference',
+    //   apiReference({
+    //     content: swaggerDocument,
+    //   })
+    // );
   }
 
   // Prefer explicit numeric port with fallback
