@@ -1,8 +1,6 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../database/prisma.service';
-import { Prisma } from '@prisma/client';
 import { StandardResponseDto } from '../../shared/dto';
-
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { CreatePermissionCategoryDto } from './dto/create-permission-category.dto';
@@ -12,7 +10,7 @@ import { PermissionCategoryDto } from './dto/permission-category.dto';
 import { MESSAGES } from '../../shared/errors';
 import { AssignPermissionsDto } from './dto/assign-permission.dto';
 import { PermissionGetForUserDto } from './dto/permission-get-for-user.dto';
-import { DEFAULT_PERMISSION_KEYS } from 'src/shared/permissions/default-permissions';
+import { DEFAULT_PERMISSION_KEYS } from '../../shared/permissions/default-permissions';
 
 @Injectable()
 export class PermissionsService {
