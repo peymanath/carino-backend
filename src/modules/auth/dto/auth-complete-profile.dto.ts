@@ -1,5 +1,5 @@
-import { CreateUserProfileDto } from '@/modules/users/dto';
-import { Gender } from '@/types';
+import { CreateUserProfileDto } from '../../users/dto';
+import { Gender } from '../../../types';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class AuthCompleteProfileDto extends CreateUserProfileDto {}

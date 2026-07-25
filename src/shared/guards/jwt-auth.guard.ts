@@ -2,7 +2,7 @@ import { ExecutionContext, ForbiddenException, Injectable, Scope, UnauthorizedEx
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 import { DECORATOR_PERMISSIONS_KEY } from '../decorators/permissions.decorator'; // adjust import path if needed
-import { SessionService } from '@/modules/session/session.service';
+import { SessionService } from '../../modules/session/session.service';
 
 type PermissionShape = string | { key: string };
 

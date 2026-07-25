@@ -1,8 +1,8 @@
 import { Response } from 'express';
 import { Prisma } from '@prisma/client';
 import { ExceptionFilter, Catch, ArgumentsHost, HttpException, HttpStatus, Logger } from '@nestjs/common';
-import { ProblemDetailsDto } from '@/shared/dto/ProblemDetails.dto';
-import { ProblemDetails } from '@/shared/interfaces/http-exception.interface';
+import { ProblemDetailsDto } from '../dto/ProblemDetails.dto';
+import { ProblemDetails } from '../interfaces/http-exception.interface';
 import { ValidationErrorResponse } from '../interfaces/validation.interface';
 import { MESSAGES } from '../errors';
 import { Var } from '../errors/errors.types';

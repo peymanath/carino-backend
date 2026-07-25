@@ -1,10 +1,10 @@
 import { Controller, Get, Post, Patch, Delete, Param, Body, Query, HttpCode, HttpStatus, ParseIntPipe } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto, QueryUserDto, UpdateUserDto } from './dto';
-import { StandardPaginatedResponseDto, StandardResponseDto } from '@/shared/dto';
+import { StandardPaginatedResponseDto, StandardResponseDto } from '../../shared/dto';
 import { User } from '@prisma/client';
-import { Permissions } from '@/shared/decorators/permissions.decorator';
-import { HasAuthentication } from '@/shared/decorators/auth-swagger.decorator';
+import { Permissions } from '../../shared/decorators/permissions.decorator';
+import { HasAuthentication } from '../../shared/decorators/auth-swagger.decorator';
 
 @HasAuthentication()
 @Controller('users')

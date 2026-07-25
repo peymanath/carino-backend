@@ -1,11 +1,11 @@
 import { Controller, Get, Post, Delete, Param, Body, Patch, Req, HttpCode, HttpStatus } from '@nestjs/common';
 import { PasskeyService } from './passkey.service';
-import { Permissions } from '@/shared/decorators/permissions.decorator';
+import { Permissions } from '../../shared/decorators/permissions.decorator';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CreatePasskeyProviderDto, PasskeyProviderResponseDto, UpdatePasskeyProviderDto } from './dto/passkey-provider.dto';
-import { HasAuthentication } from '@/shared/decorators/auth-swagger.decorator';
+import { HasAuthentication } from '../../shared/decorators/auth-swagger.decorator';
 import { PasskeyRegistrationOptionsResponseDto, PasskeyRegisterVerifyDto } from './dto/passkey-register.dto';
-import { StandardResponseDto } from '@/shared/dto';
+import { StandardResponseDto } from '../../shared/dto';
 import { PasskeyListDTO, PasskeyListItemDTO } from './dto/passkey.dto';
 import { PasskeyLoginOptionsDto, PasskeyLoginVerifyDto } from './dto/passkey-login.dto';
 import { OTPVerificationResultDto } from '../auth/dto/auth-otp-verify.dto';

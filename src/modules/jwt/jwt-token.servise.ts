@@ -1,4 +1,4 @@
-import { JwtStandardClaims } from '@/shared/interfaces/jwt-standard-claims.interface';
+import { JwtStandardClaims } from '../../shared/interfaces/jwt-standard-claims.interface';
 import { Injectable } from '@nestjs/common';
 import { JwtService, JwtSignOptions, JwtVerifyOptions } from '@nestjs/jwt';
 

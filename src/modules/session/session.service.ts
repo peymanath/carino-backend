@@ -1,13 +1,13 @@
 import { Injectable, Scope, Inject, BadRequestException, NotFoundException } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import type { Request } from 'express';
-import { StandardResponseDto } from '@/shared/dto';
+import { StandardResponseDto } from '../../shared/dto';
 import { SessionDto } from './dto/session.dto';
-import { EnumBrowserEngine, EnumBrowserName, EnumDeviceType, EnumOSName } from '@/types';
+import { EnumBrowserEngine, EnumBrowserName, EnumDeviceType, EnumOSName } from '../../types';
 import { RedisService } from '../cache/redis.service';
-import { EnumRedisDatabase } from '@/shared/enums/EnumRedisDatabase';
-import { buildRedisKey, transformDates } from '@/shared/utils';
-import { EnumRedisKey } from '@/shared/enums/EnumRedisKey';
+import { EnumRedisDatabase } from '../../shared/enums/EnumRedisDatabase';
+import { buildRedisKey, transformDates } from '../../shared/utils';
+import { EnumRedisKey } from '../../shared/enums/EnumRedisKey';
 import { PrismaService } from '../database/prisma.service';
 
 @Injectable({ scope: Scope.REQUEST })

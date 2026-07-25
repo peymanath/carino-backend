@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { JobsService } from '../jobs/jobs.service';
 import { PrismaService } from '../database/prisma.service';
-import { StandardResponseDto } from '@/shared/dto';
+import { StandardResponseDto } from '../../shared/dto';
 
 @Injectable()
 export class BomberService {

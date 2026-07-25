@@ -1,7 +1,7 @@
 import { Logger, BadRequestException, NotFoundException, InternalServerErrorException, ServiceUnavailableException } from '@nestjs/common';
 import { Client as MinioClient } from 'minio';
 import { MinioConfig, PutObjectOptions, StorageHealthStatus, StorageObjectInfo, StorageReadable } from './interface/storage-driver.interface';
-import { registerEnv } from '@/config/env.config';
+import { registerEnv } from '../../config/env.config';
 
 export class StorageClient {
   private readonly client: MinioClient;

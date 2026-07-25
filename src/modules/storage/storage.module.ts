@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { StorageService } from './storage.service';
 import { StorageClient } from './storage.client';
-import { storageConfig } from '@/config/env.config';
+import { storageConfig } from '../../config/env.config';
 import { StorageController } from './storage.controller';
 
 @Module({

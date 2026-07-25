@@ -3,12 +3,12 @@ import { StorageClient } from './storage.client';
 import { RedisService } from '../cache/redis.service';
 import { PrismaService } from '../database/prisma.service';
 import { StorageHealthStatus } from './interface/storage-driver.interface';
-import { EnumRedisKey } from '@/shared/enums/EnumRedisKey';
-import { buildRedisKey } from '@/shared/utils';
+import { EnumRedisKey } from '../../shared/enums/EnumRedisKey';
+import { buildRedisKey } from '../../shared/utils';
 import { UploadAndRegisterMedia, UploadAndRegisterMediaDto, UploadAndRegisterMediaOption } from './interface/upload-register-media.interface';
 import { EnumStorageBucket, StorageEnvPrefix } from './enums/storage.enum';
 import { randomBytes, createHash } from 'crypto';
-import { registerEnv } from '@/config/env.config';
+import { registerEnv } from '../../config/env.config';
 
 @Injectable()
 export class StorageService {

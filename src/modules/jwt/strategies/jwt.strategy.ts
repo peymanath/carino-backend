@@ -1,10 +1,10 @@
 import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy, StrategyOptions } from 'passport-jwt';
-import { PrismaService } from '@/modules/database/prisma.service';
+import { PrismaService } from '../../database/prisma.service';
 import type { JwtStandardClaims } from '../../../shared/interfaces/jwt-standard-claims.interface';
-import { fromB64 } from '@/shared/utils';
-import { UserWithPermissions } from '@/shared/interfaces/user-with-permisstions.interface';
+import { fromB64 } from '../../../shared/utils';
+import { UserWithPermissions } from '../../../shared/interfaces/user-with-permisstions.interface';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()

@@ -3,9 +3,9 @@ import { OTPAuthDto as OtpAuthDto, OtpDataDto } from './dto/auth-otp.dto';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { OTPVerifyDto, OTPVerificationResultDto } from './dto/auth-otp-verify.dto';
 import { Controller, Post, Body, HttpCode, HttpStatus, UsePipes, ValidationPipe, Req } from '@nestjs/common';
-import { StandardResponseDto } from '@/shared/dto';
+import { StandardResponseDto } from '../../shared/dto';
 import { AuthCompleteProfileDto, AuthCompleteProfileResultDto } from './dto/auth-complete-profile.dto';
-import { HasAuthentication } from '@/shared/decorators/auth-swagger.decorator';
+import { HasAuthentication } from '../../shared/decorators/auth-swagger.decorator';
 
 @Controller('auth')
 // @ApiBadRequestResponse({ description: 'Bad Request', type: ProblemDetailsDto })

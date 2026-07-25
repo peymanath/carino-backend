@@ -1,9 +1,9 @@
 import { Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseUUIDPipe, Req } from '@nestjs/common';
 import { ApiOkResponse, ApiNoContentResponse, ApiParam, ApiOperation } from '@nestjs/swagger';
-import { StandardResponseDto } from '@/shared/dto';
+import { StandardResponseDto } from '../../shared/dto';
 import { SessionDto } from './dto/session.dto';
 import { SessionService } from './session.service';
-import { HasAuthentication } from '@/shared/decorators/auth-swagger.decorator';
+import { HasAuthentication } from '../../shared/decorators/auth-swagger.decorator';
 
 @HasAuthentication()
 @Controller('session')

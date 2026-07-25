@@ -1,19 +1,19 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '@/modules/database/prisma.service';
-import { RedisService } from '@/modules/cache/redis.service';
+import { PrismaService } from '../database/prisma.service';
+import { RedisService } from '../cache/redis.service';
 import { User, UserProfile } from '@prisma/client';
-import { EnumRedisDatabase } from '@/shared/enums/EnumRedisDatabase';
-import { buildRedisKey } from '@/shared/utils';
-import { EnumRedisKey } from '@/shared/enums/EnumRedisKey';
+import { EnumRedisDatabase } from '../../shared/enums/EnumRedisDatabase';
+import { buildRedisKey } from '../../shared/utils';
+import { EnumRedisKey } from '../../shared/enums/EnumRedisKey';
 import { OTPVerificationResultDto } from './dto/auth-otp-verify.dto';
-import { JwtTokenService } from '@/modules/jwt/jwt-token.servise';
-import { StandardResponseDto } from '@/shared/dto';
-import { JwtStandardClaims } from '@/shared/interfaces/jwt-standard-claims.interface';
+import { JwtTokenService } from '../jwt/jwt-token.servise';
+import { StandardResponseDto } from '../../shared/dto';
+import { JwtStandardClaims } from '../../shared/interfaces/jwt-standard-claims.interface';
 import { SessionService } from '../session/session.service';
-import { MESSAGES } from '@/shared/errors';
-import { registerEnv } from '@/config/env.config';
+import { MESSAGES } from '../../shared/errors';
+import { registerEnv } from '../../config/env.config';
 import { AuthCompleteProfileDto, AuthCompleteProfileResultDto } from './dto/auth-complete-profile.dto';
-import { Gender, ISessionToken } from '@/types';
+import { Gender, ISessionToken } from '../../types';
 import { PermissionsService } from '../permissions/permissions.service';
 
 @Injectable()

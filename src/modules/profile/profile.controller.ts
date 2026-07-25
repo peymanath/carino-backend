@@ -1,11 +1,11 @@
 import { Controller, Get, Body, HttpCode, HttpStatus, Put, Req, Post, UseInterceptors, UploadedFile } from '@nestjs/common';
-import { StandardResponseDto } from '@/shared/dto';
+import { StandardResponseDto } from '../../shared/dto';
 import { ApiBody, ApiConsumes, ApiOkResponse } from '@nestjs/swagger';
 import { ProfileService } from './profile.service';
 import { UpdateProfileDto } from './dto/profile.dto';
 import { ProfileDto, ProfileImageUploadDto } from './interface/profile.interface';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { HasAuthentication } from '@/shared/decorators/auth-swagger.decorator';
+import { HasAuthentication } from '../../shared/decorators/auth-swagger.decorator';
 
 @HasAuthentication()
 @Controller('profile')

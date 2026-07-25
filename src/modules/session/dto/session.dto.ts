@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { EnumBrowserEngine, EnumBrowserName, EnumDeviceType, EnumOSName } from '@/types';
+import { EnumBrowserEngine, EnumBrowserName, EnumDeviceType, EnumOSName } from '../../../types';
 
 export class SessionDto {
   @ApiProperty({ example: '6e6c6b49-143e-4b0c-9ef1-bc3b7c90bb8f' })

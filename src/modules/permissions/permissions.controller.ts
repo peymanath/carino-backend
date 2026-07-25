@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Req, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiParam } from '@nestjs/swagger';
-import { ProblemDetailsDto, StandardResponseDto } from '@/shared/dto';
+import { ProblemDetailsDto, StandardResponseDto } from '../../shared/dto';
 import { PermissionsService } from './permissions.service';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
@@ -10,7 +10,7 @@ import { CategoryPermissionsDto, PermissionDto } from './dto/permission.dto';
 import { PermissionCategoryDto } from './dto/permission-category.dto';
 import { AssignPermissionsDto } from './dto/assign-permission.dto';
 import { PermissionGetForUserDto } from './dto/permission-get-for-user.dto';
-import { HasAuthentication } from '@/shared/decorators/auth-swagger.decorator';
+import { HasAuthentication } from '../../shared/decorators/auth-swagger.decorator';
 
 @HasAuthentication()
 @UsePipes(new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true }))

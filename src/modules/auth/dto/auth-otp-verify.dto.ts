@@ -1,5 +1,5 @@
-import { StandardResponseDto } from '@/shared/dto';
-import { ISessionToken } from '@/types';
+import { StandardResponseDto } from '../../../shared/dto';
+import { ISessionToken } from '../../../types';
 import { ApiProperty } from '@nestjs/swagger';
 import { User, UserProfile, Media } from '@prisma/client';
 import { IsNotEmpty, IsString, Matches, IsInt } from 'class-validator';

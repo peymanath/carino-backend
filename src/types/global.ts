@@ -1,4 +1,4 @@
-import { SessionDto } from '@/modules/session/dto/session.dto';
+import { SessionDto } from '../modules/session/dto/session.dto';
 import { User } from '@prisma/client';
 
 declare global {

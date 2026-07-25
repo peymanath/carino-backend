@@ -1,4 +1,4 @@
-import { StandardResponseDto } from '@/shared/dto';
+import { StandardResponseDto } from '../../shared/dto';
 import { Injectable } from '@nestjs/common';
 import { QueryCoinMarketCapDto } from './dto/coinmarketcap-query';
 import { JobsService } from '../jobs/jobs.service';

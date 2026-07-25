@@ -1,13 +1,13 @@
-import { StandardResponseDto } from "@/shared/dto";
+import { StandardResponseDto } from '../../shared/dto';
 import { Injectable } from "@nestjs/common";
 import { GenerateCaptchaDto, ReGenerateCaptchaDto, VerifyCaptchaDto } from "./dto/get-captcha.dto";
 import * as svgCaptcha from "svg-captcha";
 import { optimize, Output } from "svgo";
 import { randomUUID } from "crypto";
 import { RedisService } from "../cache/redis.service";
-import { EnumRedisDatabase } from "@/shared/enums/EnumRedisDatabase";
-import { buildRedisKey } from "@/shared/utils";
-import { EnumRedisKey } from "@/shared/enums/EnumRedisKey";
+import { EnumRedisDatabase } from '../../shared/enums/EnumRedisDatabase';
+import { buildRedisKey } from '../../shared/utils';
+import { EnumRedisKey } from '../../shared/enums/EnumRedisKey';
 
 @Injectable()
 export class CaptchaService {

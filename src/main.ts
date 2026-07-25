@@ -4,7 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ClassSerializerInterceptor, Logger, ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './shared/filters/http-exception.filter';
 import { TransformResponseInterceptor } from './shared/interceptors/TransformResponseInterceptor';
-import { ProblemDetailsDto } from '@/shared/dto/ProblemDetails.dto';
+import { ProblemDetailsDto } from './shared/dto/ProblemDetails.dto';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { TransformDateInterceptor } from './shared/interceptors/TransformDateInterceptor';
 import { registerEnv } from './config/env.config';

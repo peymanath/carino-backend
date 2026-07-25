@@ -1,4 +1,4 @@
-import { EnumRedisDatabase } from '@/shared/enums/EnumRedisDatabase';
+import { EnumRedisDatabase } from '../../shared/enums/EnumRedisDatabase';
 import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Redis, { RedisKey } from 'ioredis';

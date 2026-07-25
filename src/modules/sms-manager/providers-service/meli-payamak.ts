@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import fetch from "node-fetch";
-import { registerEnv } from "@/config/env.config";
+import { registerEnv } from '../../../config/env.config';
 import { ProviderService, EnumProviderServiceStatus, ProviderServicePattern, MergeTupleToObject } from "../types/sms-services.types";
 
 @Injectable()

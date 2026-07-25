@@ -1,8 +1,8 @@
-import { RedisService } from '@/modules/cache/redis.service';
-import { ICoinMarketCapSignals } from '@/modules/crawl/interface/coinmarketcap.interface';
-import { EnumRedisDatabase } from '@/shared/enums/EnumRedisDatabase';
-import { EnumRedisKey } from '@/shared/enums/EnumRedisKey';
-import { buildRedisKey } from '@/shared/utils';
+import { RedisService } from '../../../cache/redis.service';
+import { ICoinMarketCapSignals } from '../../../crawl/interface/coinmarketcap.interface';
+import { EnumRedisDatabase } from '../../../../shared/enums/EnumRedisDatabase';
+import { EnumRedisKey } from '../../../../shared/enums/EnumRedisKey';
+import { buildRedisKey } from '../../../../shared/utils';
 import { Injectable, Logger } from '@nestjs/common';
 import axios, { AxiosResponse } from 'axios';
 

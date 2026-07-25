@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { EnumProviderServiceStatus, ProviderService, ProviderServicePattern } from "./types/sms-services.types";
-import { registerEnv } from "@/config/env.config";
+import { registerEnv } from '../../config/env.config';
 import { ProviderServiceMeliPayamak } from "./providers-service/meli-payamak";
 
 @Injectable()

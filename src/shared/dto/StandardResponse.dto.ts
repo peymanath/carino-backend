@@ -1,4 +1,4 @@
-import { deepOmitKeys } from "@/shared/utils/deep-omit-keys.util";
+import { deepOmitKeys } from '../utils/deep-omit-keys.util';
 import { ApiProperty } from "@nestjs/swagger";
 import { Transform } from "class-transformer";
 

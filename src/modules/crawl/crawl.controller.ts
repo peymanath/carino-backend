@@ -1,6 +1,6 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { CrawlService } from './crawl.service';
-import { StandardResponseDto } from '@/shared/dto';
+import { StandardResponseDto } from '../../shared/dto';
 import { TokenData } from './interface/coinmarketcap.interface';
 import { QueryCoinMarketCapDto } from './dto/coinmarketcap-query';
 

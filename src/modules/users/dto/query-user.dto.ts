@@ -1,4 +1,4 @@
-import { PaginationQueryDto } from "@/shared/dto/PaginationQuery.dto";
+import { PaginationQueryDto } from '../../../shared/dto/PaginationQuery.dto';
 import { ApiPropertyOptional } from "@nestjs/swagger";
 import { IsBoolean, IsMobilePhone, IsOptional, IsString } from "class-validator";
 

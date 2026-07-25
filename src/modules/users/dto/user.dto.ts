@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
 import { IsDateString, IsEmail, IsMobilePhone, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
-import { Gender } from '@/types';
+import { Gender } from '../../../types';
 
 export class CreateUserProfileDto {
   @ApiPropertyOptional()

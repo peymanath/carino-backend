@@ -1,9 +1,9 @@
 import { Global, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { JwtStrategy } from '@/modules/jwt/strategies/jwt.strategy';
+import { JwtStrategy } from './strategies/jwt.strategy';
 import { JwtTokenService } from './jwt-token.servise';
-import { fromB64 } from '@/shared/utils';
+import { fromB64 } from '../../shared/utils';
 import { ConfigService } from '@nestjs/config';
 
 @Global()

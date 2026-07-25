@@ -1,7 +1,7 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '@/modules/database/prisma.service';
+import { PrismaService } from '../database/prisma.service';
 import { Prisma } from '@prisma/client';
-import { StandardResponseDto } from '@/shared/dto';
+import { StandardResponseDto } from '../../shared/dto';
 
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
@@ -9,7 +9,7 @@ import { CreatePermissionCategoryDto } from './dto/create-permission-category.dt
 import { UpdatePermissionCategoryDto } from './dto/update-permission-category.dto';
 import { CategoryPermissionsDto, PermissionDto } from './dto/permission.dto';
 import { PermissionCategoryDto } from './dto/permission-category.dto';
-import { MESSAGES } from '@/shared/errors';
+import { MESSAGES } from '../../shared/errors';
 import { AssignPermissionsDto } from './dto/assign-permission.dto';
 import { PermissionGetForUserDto } from './dto/permission-get-for-user.dto';
 

@@ -1,5 +1,5 @@
-import { StandardPaginatedResponseDto } from "@/shared/dto";
-import { IPaginationMeta } from "@/shared/interfaces/pagination-meta.interface";
+import { StandardPaginatedResponseDto } from '../dto';
+import { IPaginationMeta } from '../interfaces/pagination-meta.interface';
 
 export async function paginateSlice<T>({ page = 1, pageSize = 20 }: IPaginationMeta, fetcher: (args: { skip: number; take: number }) => Promise<T[]>): Promise<StandardPaginatedResponseDto<T>> {
   const p = Math.max(1, Number(page));
