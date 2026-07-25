@@ -12,23 +12,29 @@ import { PermissionCategoryDto } from './dto/permission-category.dto';
 import { MESSAGES } from '../../shared/errors';
 import { AssignPermissionsDto } from './dto/assign-permission.dto';
 import { PermissionGetForUserDto } from './dto/permission-get-for-user.dto';
+import { DEFAULT_PERMISSION_KEYS } from 'src/shared/permissions/default-permissions';
 
 @Injectable()
 export class PermissionsService {
   constructor(private readonly prisma: PrismaService) {}
 
+  // #region ensurePermissionExists
   private async ensurePermissionExists(id: number): Promise<PermissionDto> {
     const permission = await this.prisma.permission.findUnique({ where: { id } });
     if (!permission) throw new NotFoundException({ detail: MESSAGES.fmtNamed('PERMISSION_NOT_FOUND', { id }) });
     return permission;
   }
+  // #endregion
 
+  // #region ensureCategoryExists
   private async ensureCategoryExists(id: number) {
     const c = await this.prisma.permissionCategory.findUnique({ where: { id } });
     if (!c) throw new NotFoundException({ detail: MESSAGES.fmt('PERMISSION_CATEGORY_NOT_FOUND', id) });
     return c;
   }
+  // #endregion
 
+  // #region validateCategory
   private async validateCategory(categoryId?: number) {
     if (!categoryId) return;
 
@@ -43,7 +49,9 @@ export class PermissionsService {
       });
     }
   }
+  // #endregion
 
+  // #region createCategory
   async createCategory(createDto: CreatePermissionCategoryDto): Promise<StandardResponseDto<PermissionCategoryDto>> {
     const duplicate = await this.prisma.permissionCategory.findFirst({
       where: { name: createDto.name },
@@ -61,7 +69,9 @@ export class PermissionsService {
       data: createdPermissionCategory,
     });
   }
+  // #endregion
 
+  // #region findAllCategories
   async findAllCategories(): Promise<StandardResponseDto<PermissionCategoryDto[]>> {
     const permissionCategories = await this.prisma.permissionCategory.findMany({
       orderBy: { id: 'asc' },
@@ -72,6 +82,9 @@ export class PermissionsService {
       data: permissionCategories,
     });
   }
+  // #endregion
+
+  // #region findCategoryById
   async findCategoryById(id: number): Promise<StandardResponseDto<PermissionCategoryDto>> {
     const permissionCategory = await this.ensureCategoryExists(id);
 
@@ -82,7 +95,9 @@ export class PermissionsService {
       data: permissionCategory,
     });
   }
+  // #endregion
 
+  // #region updateCategory
   async updateCategory(updateDto: UpdatePermissionCategoryDto): Promise<StandardResponseDto<PermissionCategoryDto>> {
     await this.ensureCategoryExists(updateDto.id);
 
@@ -104,7 +119,9 @@ export class PermissionsService {
       data: updatedCategoryPermistion,
     });
   }
+  // #endregion
 
+  // #region removeCategory
   async removeCategory(id: number): Promise<void> {
     const category = await this.ensureCategoryExists(id);
 
@@ -115,7 +132,9 @@ export class PermissionsService {
 
     await this.prisma.permissionCategory.delete({ where: { id } });
   }
+  // #endregion
 
+  // #region createPermission
   async createPermission(createDto: CreatePermissionDto): Promise<StandardResponseDto<PermissionDto>> {
     await this.validateCategory(createDto.categoryId);
 
@@ -139,7 +158,9 @@ export class PermissionsService {
       data: created,
     });
   }
+  // #endregion
 
+  // #region findAllPermissions
   async findAllPermissions(): Promise<StandardResponseDto<CategoryPermissionsDto[]>> {
     const rows = await this.prisma.permissionCategory.findMany({
       orderBy: { id: 'asc' },
@@ -171,7 +192,9 @@ export class PermissionsService {
       data: data,
     });
   }
+  // #endregion
 
+  // #region findPermissionById
   async findPermissionById(id: number): Promise<StandardResponseDto<PermissionDto>> {
     const permission = await this.prisma.permission.findUnique({
       where: { id },
@@ -183,7 +206,9 @@ export class PermissionsService {
       data: permission,
     });
   }
+  // #endregion
 
+  // #region updatePermission
   async updatePermission(updateDto: UpdatePermissionDto): Promise<StandardResponseDto<PermissionDto>> {
     await this.ensurePermissionExists(updateDto.id);
 
@@ -210,13 +235,17 @@ export class PermissionsService {
       data: updatedPermistion,
     });
   }
+  // #endregion
 
+  // #region removePermission
   async removePermission(id: number): Promise<void> {
     await this.ensurePermissionExists(id);
 
     await this.prisma.permission.delete({ where: { id } });
   }
+  // #endregion
 
+  // #region assignPermissions
   async assignPermissions(dto: AssignPermissionsDto): Promise<void> {
     const { userId, permissionIds } = dto;
 
@@ -253,6 +282,29 @@ export class PermissionsService {
       select: { id: true },
     });
   }
+  // #endregion
+
+  // #region assignDefaultPermissions
+  async assignDefaultPermissions(userId: number): Promise<void> {
+    const permissions = await this.prisma.permission.findMany({
+      where: {
+        key: {
+          in: [...DEFAULT_PERMISSION_KEYS],
+        },
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    await this.assignPermissions({
+      userId,
+      permissionIds: permissions.map(permission => permission.id),
+    });
+  }
+  // #endregion
+
+  // #region getForPermissionWithUserId
   async getForPermissionWithUserId(userId: number): Promise<StandardResponseDto<PermissionGetForUserDto>> {
     if (!userId) {
       throw new BadRequestException('User ID is required');
@@ -273,4 +325,5 @@ export class PermissionsService {
       },
     });
   }
+  // #endregion
 }

@@ -22,4 +22,21 @@ export const PERMISSION_CATEGORIES = [
       },
     ],
   },
+  {
+    name: 'Profile',
+    permissions: [
+      {
+        key: PERMISSIONS.PROFILE_READ,
+        name: 'Read Profile',
+      },
+      {
+        key: PERMISSIONS.PROFILE_UPDATE,
+        name: 'Update Profile',
+      },
+      {
+        key: PERMISSIONS.PROFILE_UPLOAD_AVATAR,
+        name: 'Upload Avatar Profile',
+      },
+    ],
+  },
 ] as const;

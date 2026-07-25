@@ -6,6 +6,8 @@ import { UpdateProfileDto } from './dto/profile.dto';
 import { ProfileDto, ProfileImageUploadDto } from './interface/profile.interface';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { HasAuthentication } from '../../shared/decorators/auth-swagger.decorator';
+import { Permissions } from 'src/shared/decorators/permissions.decorator';
+import { PERMISSIONS } from 'src/shared/permissions/permissions';
 
 @HasAuthentication()
 @Controller('profile')
@@ -13,13 +15,13 @@ export class ProfileController {
   constructor(private readonly usersService: ProfileService) {}
 
   @Get()
-  // Todo: @Permissions('profile.read')
+  @Permissions(PERMISSIONS.PROFILE_READ)
   async findProfile(@Req() req: Request): Promise<StandardResponseDto<ProfileDto>> {
     return this.usersService.findProfile(req.user.id);
   }
 
   @Put()
-  // Todo: @Permissions('profile.create')
+   @Permissions(PERMISSIONS.PROFILE_UPDATE)
   @HttpCode(HttpStatus.CREATED)
   async updateProfile(@Body() dto: UpdateProfileDto, @Req() req: Request): Promise<StandardResponseDto<void>> {
     return this.usersService.updateProfile(req.user.id, dto);
@@ -42,7 +44,7 @@ export class ProfileController {
     description: 'Upload Image for profile user',
     type: ProfileImageUploadDto,
   })
-  // Todo: @Permissions('profile.create')
+  @Permissions(PERMISSIONS.PROFILE_UPLOAD_AVATAR)
   @HttpCode(HttpStatus.CREATED)
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(
