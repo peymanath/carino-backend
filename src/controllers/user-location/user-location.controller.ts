@@ -11,8 +11,6 @@ export class UserLocationController {
   //#region Set User Location
   @Post()
   async setUserLocation(@Req() req: Request, @Body() dto: SetUserLocationDto) {
-    const userId = req.user.id;
-
     if (!dto.addressId && (dto.latitude === undefined || dto.longitude === undefined)) {
       throw new BadRequestException({
         detail: MESSAGES.LOCATION_REQUIRED_LOCATION_SOURCE,
@@ -21,10 +19,10 @@ export class UserLocationController {
     }
 
     if (dto.addressId) {
-      return this.locationService.getLocationFromAddress(userId);
+      return this.locationService.getLocationFromAddress(req.user.id);
     }
 
-    return this.locationService.setUserLocation(userId, dto.latitude!, dto.longitude!);
+    return this.locationService.setUserLocation(req.user.id, dto.latitude!, dto.longitude!);
   }
   //#endregion
 
