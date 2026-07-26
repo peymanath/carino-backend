@@ -196,7 +196,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       const body = httpException.getResponse();
 
       // Safely extract the message from the exception body
-      const detail = typeof body === 'string' ? body : (body as any)?.detail || 'خطای ناشناخته از Prisma';
+      const detail = typeof body === 'string' ? body : this.isObject(body) && typeof body.detail === 'string' ? body.detail : 'خطای ناشناخته از Prisma';
 
       return {
         prisma: [detail],
@@ -211,7 +211,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
    * Detects whether an object is a validation error response.
    */
   private isValidationErrorResponse(obj: unknown): obj is ValidationErrorResponse {
-    return this.isObject(obj) && typeof obj.statusCode === 'number' && obj.statusCode === HttpStatus.BAD_REQUEST && Array.isArray(obj.message) && obj.message.every(msg => typeof msg === 'string') && typeof obj.error === 'string';
+    return this.isObject(obj) && typeof obj.statusCode === 'number' && obj.statusCode === Number(HttpStatus.BAD_REQUEST) && Array.isArray(obj.message) && obj.message.every(msg => typeof msg === 'string') && typeof obj.error === 'string';
   }
 
   /**

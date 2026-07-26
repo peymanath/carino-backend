@@ -9,7 +9,7 @@ import { ApiCallerBomberJob } from './jobs.processor';
   imports: [
     BullModule.forRootAsync({
       inject: [RedisService],
-      useFactory: async () => {
+      useFactory: () => {
         const host = process.env.REDIS_HOST || '127.0.0.1';
         const port = +(process.env.REDIS_PORT || 6379);
         const username = process.env.REDIS_USERNAME || undefined;
@@ -30,7 +30,9 @@ import { ApiCallerBomberJob } from './jobs.processor';
       name: 'jobs',
     }),
   ],
-  providers: [JobsService, ApiCallerBomberJob, 
+  providers: [
+    JobsService,
+    ApiCallerBomberJob,
     // ApiCallerBomberService
   ],
   exports: [JobsService],

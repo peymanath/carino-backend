@@ -1,35 +1,42 @@
-import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from "@nestjs/common";
-import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
+import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { StandardPaginatedResponseDto, StandardResponseDto } from '../dto';
+
+type ResponsePayload = {
+  message?: string;
+  meta?: unknown;
+  data?: unknown;
+  success?: boolean;
+  page?: number;
+  [key: string]: unknown;
+};
 
 @Injectable()
 export class TransformResponseInterceptor implements NestInterceptor<unknown, StandardResponseDto<unknown>> {
-  intercept(_context: ExecutionContext, next: CallHandler): Observable<StandardResponseDto<any>> {
+  intercept(_context: ExecutionContext, next: CallHandler): Observable<StandardResponseDto<unknown>> {
     return next.handle().pipe(
-      map((res) => {
-        // If the response already contains a 'success' property, assume it's correctly structured
-        if (res && typeof res === "object" && Object.prototype.hasOwnProperty.call(res, "success")) {
-          return res;
+      map((res: unknown): StandardResponseDto<unknown> => {
+        const response = (res && typeof res === 'object' ? res : {}) as ResponsePayload;
+
+        if (Object.prototype.hasOwnProperty.call(response, 'success')) {
+          return response as StandardResponseDto<unknown>;
         }
 
-        // Extract known response fields: message, meta, and data (renamed to inner)
-        const { message, meta, data: inner, ...rest } = res ?? {};
+        const { message, meta, data: inner, ...rest } = response;
 
-        // If data is an array or pagination metadata exists, return a paginated response
-        if (rest && (rest.meta !== undefined || rest.page !== undefined)) {
+        if (rest.meta !== undefined || rest.page !== undefined) {
           return {
-            message: message ?? "درخواست با موفقیت انجام شد",
+            message: message ?? 'درخواست با موفقیت انجام شد',
             data: inner ?? rest,
-            meta: meta ?? ({} as any)
-          } as StandardPaginatedResponseDto<any>;
+            meta: meta ?? {},
+          } as StandardPaginatedResponseDto<unknown>;
         }
 
-        // Otherwise return a standard response without pagination
         return {
-          message: message ?? "درخواست با موفقیت انجام شد",
-          data: inner ?? res
-        } as StandardResponseDto<any>;
+          message: message ?? 'درخواست با موفقیت انجام شد',
+          data: inner ?? res,
+        };
       })
     );
   }

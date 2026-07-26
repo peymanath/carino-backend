@@ -1,23 +1,19 @@
 export enum EnumProviderServiceStatus {
-  SENDED = "SENDED",
-  FAILED = "FAILED",
-  QUEUED = "QUEUED",
-  UNKNOWN = "UNKNOWN"
+  SENDED = 'SENDED',
+  FAILED = 'FAILED',
+  QUEUED = 'QUEUED',
+  UNKNOWN = 'UNKNOWN',
 }
 
 export interface ProviderServicePattern<TParams extends Array<object>> {
   status: boolean;
-  data: MergeTupleToObject<TParams>; // خروجی، آبجکت مرج‌شده
-  errors?: any;
+  data: MergeTupleToObject<TParams>;
+  errors?: unknown;
   messageId?: string;
   provider?: string;
 }
 
-// Converts tuple of objects to a single merged object
-export type MergeTupleToObject<T extends Array<object>, R = {}> =
-  T extends [infer First, ...infer Rest]
-    ? MergeTupleToObject<Rest extends Array<object> ? Rest : [], R & First>
-    : R;
+export type MergeTupleToObject<T extends Array<object>, R = object> = T extends [infer First, ...infer Rest] ? MergeTupleToObject<Rest extends Array<object> ? Rest : [], R & First> : R;
 
 export interface ProviderService {
   sendSms(mobile: string, message: string): Promise<boolean>;

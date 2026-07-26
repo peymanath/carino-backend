@@ -1,0 +1,49 @@
+model Address {
+  id         Int      @id @default(autoincrement())
+  type       Int // EnumAddressType
+  cityId     Int // شهر
+  address    String // آدرس
+  postalCode String? // کد پستی
+  plaque     String? // پلاک
+  unit       String? // واحد
+  isDefault  Boolean  @default(false)
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+  city       City    @relation(fields: [cityId], references: [id])
+
+  @@index([userId])
+}
+
+model Country {
+  id        Int        @id @default(autoincrement())
+  name      String
+  provinces Province[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Province {
+  id        Int      @id @default(autoincrement())
+  countryId Int
+  name      String
+  cities    City[]
+  country   Country  @relation(fields: [countryId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([countryId])
+}
+
+model City {
+  id         Int       @id @default(autoincrement())
+  provinceId Int
+  name       String
+  addresses  Address[]
+  province   Province  @relation(fields: [provinceId], references: [id], onDelete: Cascade)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@index([provinceId])
+}

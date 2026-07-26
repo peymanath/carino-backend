@@ -1,5 +1,3 @@
-import { ApiProperty } from "@nestjs/swagger";
-
 export class CategoryPermissionsDto {
   categoryId: number;
   categoryName: string;
@@ -7,7 +5,7 @@ export class CategoryPermissionsDto {
 }
 
 export class PermissionDto {
-  @ApiProperty() id: number;
-  @ApiProperty() key: string;
-  @ApiProperty() name: string;
+  id: number;
+  key: string;
+  name: string;
 }

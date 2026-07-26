@@ -1,11 +1,5 @@
-set -euo pipefail
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
 
-# pnpm turbo run lint || {
-#   echo "❌ pre-push: lint failed"
-#   exit 1
-# }
-
-# pnpm turbo run format || {
-#   echo "❌ pre-push: format failed"
-#   exit 1
-# }
+pnpm check-types
+pnpm build

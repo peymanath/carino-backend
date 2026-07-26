@@ -39,4 +39,25 @@ export const PERMISSION_CATEGORIES = [
       },
     ],
   },
+  {
+    name: 'Address',
+    permissions: [
+      {
+        key: PERMISSIONS.ADDRESSES_CREATE,
+        name: 'Create Address',
+      },
+      {
+        key: PERMISSIONS.ADDRESSES_READ,
+        name: 'Read Address',
+      },
+      {
+        key: PERMISSIONS.ADDRESSES_UPDATE,
+        name: 'Update Address',
+      },
+      {
+        key: PERMISSIONS.ADDRESSES_DELETE,
+        name: 'Delete Address',
+      },
+    ],
+  },
 ] as const;

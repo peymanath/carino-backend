@@ -19,6 +19,6 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
   },
-  "include": ["src", "src/**/*.ts", "eslint.config.js"],
+  "include": ["src", "src/**/*.ts", "eslint.config.mjs"],
   "exclude": ["node_modules", "dist"]
 }

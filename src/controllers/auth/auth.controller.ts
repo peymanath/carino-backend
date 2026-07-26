@@ -1,6 +1,5 @@
 import { AuthService } from './auth.service';
-import { OTPAuthDto as OtpAuthDto, OtpDataDto } from './dto/auth-otp.dto';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { OTPAuthDto as OtpAuthDto } from './dto/auth-otp.dto';
 import { OTPVerifyDto, OTPVerificationResultDto } from './dto/auth-otp-verify.dto';
 import { Controller, Post, Body, HttpCode, HttpStatus, UsePipes, ValidationPipe, Req } from '@nestjs/common';
 import { StandardResponseDto } from '../../shared/dto';
@@ -8,7 +7,6 @@ import { AuthCompleteProfileDto, AuthCompleteProfileResultDto } from './dto/auth
 import { HasAuthentication } from '../../shared/decorators/auth-swagger.decorator';
 
 
-@ApiTags("Site Authentication")
 @Controller('authentication')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

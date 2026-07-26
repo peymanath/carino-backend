@@ -7,6 +7,8 @@ import { PrismaModule } from './modules/database/prisma.module';
 import { PermissionsModule } from './controllers/permissions/permissions.module';
 import { envConfig, redisConfig } from './config/env.config';
 import { ProfileModule } from './controllers/profile/profile.module';
+import { AddressModule } from './controllers/address/address.module';
+import { DdlModule } from './controllers/ddl/ddl.module';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { ProfileModule } from './controllers/profile/profile.module';
     ProfileModule,
     UsersModule,
     PermissionsModule,
+    AddressModule,
+    DdlModule,
     // SmsManagerModule,
     // StorageModule,
     // PasskeyModule,

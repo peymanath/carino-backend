@@ -55,10 +55,7 @@ import { registerEnv } from './config/env.config';
       .setTitle('Carino API')
       .setDescription('API documentation for the Carino application')
       .setVersion('1.0')
-      .addTag('Site Authentication')
-      .addTag('Panel Users')
-      .addTag('Site Profile')
-      .addTag('Panel Permissions')
+      .setContact('Peyman Naderi', 'https://peymanath.ir', 'naderidefault@gmail.com')
       .addBearerAuth({
         type: 'http',
         scheme: 'bearer',
@@ -79,7 +76,6 @@ import { registerEnv } from './config/env.config';
       jsonDocumentUrl: 'docs/export/data/swagger/swagger.json',
       swaggerOptions: {
         persistAuthorization: true,
-        tagsSorter: (a: string, b: string) => 0,
       },
       customCssUrl: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.17.14/swagger-ui.min.css',
       customJs: ['https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.17.14/swagger-ui-bundle.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.17.14/swagger-ui-standalone-preset.min.js'],

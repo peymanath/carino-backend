@@ -1,8 +1,7 @@
 import { EnumRedisDatabase } from '../../shared/enums/EnumRedisDatabase';
 import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import Redis, { RedisKey } from 'ioredis';
-import { Callback } from 'tough-cookie';
+import Redis from 'ioredis';
 
 @Injectable()
 export class RedisService implements OnModuleInit, OnModuleDestroy {
@@ -38,9 +37,9 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
     }
   }
 
-  switchDatabase(db: EnumRedisDatabase): void {
+  async switchDatabase(db: EnumRedisDatabase): Promise<void> {
     if (RedisService.redisClient) {
-      RedisService.redisClient.select(db); // Switch to the desired database
+      await RedisService.redisClient.select(db); // Switch to the desired database
     } else {
       throw new Error('❌ Redis client is not initialized');
     }
@@ -56,7 +55,7 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
       return;
     }
 
-    this.switchDatabase(db);
+    await this.switchDatabase(db);
     RedisService.currentDb = Number(db);
   }
 

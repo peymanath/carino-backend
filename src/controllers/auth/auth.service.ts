@@ -45,7 +45,7 @@ export class AuthService {
       }
     }
 
-    let otpCode = this.generateOtp();
+    const otpCode = this.generateOtp();
 
     // Send SMS
     // const smsStatus = await this.sms.sendSmsWithPattern<[{ otp: string }]>(mobile, "359595", [{ otp: otpCode.toString() }]);
@@ -110,13 +110,15 @@ export class AuthService {
           birthDate: updateUser.profile?.birthDate ?? null,
         },
       });
-    } catch (e: any) {
-      if (e?.code === 'P2025') throw new NotFoundException('User not found');
+    } catch (e: unknown) {
+      if (e instanceof Error && 'code' in e && e.code === 'P2025') {
+        throw new NotFoundException('کاربر یافت نشد');
+      }
       throw e;
     }
   }
 
-  private async issueTokens(user: User): Promise<ISessionToken> {
+  private issueTokens(user: User): ISessionToken {
     const payload: JwtStandardClaims = { sub: user.id };
     const accessToken = this.jwt.encode<typeof payload>(payload, AuthService.EXPIRE_TIME_TOKEN);
     const refreshToken = this.jwt.encode<typeof payload>(payload, AuthService.EXPIRE_TIME_TOKEN);
@@ -146,7 +148,8 @@ export class AuthService {
     /**
      * Get User Profile and Token and Permissions
      */
-    const [tokens, profile, permissions] = await Promise.all([this.issueTokens(user), this.loadProfile(user.id), this.loadPermissions(user.id)]);
+    const tokens = this.issueTokens(user);
+    const [profile, permissions] = await Promise.all([this.loadProfile(user.id), this.loadPermissions(user.id)]);
 
     /**
      * Clean Redis

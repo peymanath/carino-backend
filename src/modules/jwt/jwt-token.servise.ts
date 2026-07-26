@@ -18,8 +18,10 @@ export class JwtTokenService {
   }
 
   public decode<TPayload extends JwtStandardClaims = JwtStandardClaims>(token: string): TPayload | null {
-    // `jwt.decode` returns `null | string | object`; we normalize to `TPayload | null`.
-    const decoded = this.jwt.decode(token);
-    return decoded && typeof decoded === 'object' ? (decoded as TPayload) : null;
+    const decoded: unknown = this.jwt.decode(token);
+    if (!decoded || typeof decoded !== 'object') {
+      return null;
+    }
+    return decoded as TPayload;
   }
 }

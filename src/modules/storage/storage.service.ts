@@ -26,20 +26,22 @@ export class StorageService {
   private _bucketExistsCacheKey(bucketName: string): string {
     return buildRedisKey(EnumRedisKey.STORAGE_BUCKET_EXIST, [bucketName]);
   }
+
   private _resolveBucket(input: UploadAndRegisterMedia): EnumStorageBucket {
-    if (!Object.values(EnumStorageBucket).includes(input.bucket)) throw new BadRequestException('Invalid storage bucket');
+    if (!Object.values(EnumStorageBucket).includes(input.bucket)) {
+      throw new BadRequestException('Invalid storage bucket');
+    }
 
     return input.bucket;
   }
+
   private _resolveVisibilityPrefix(isPublic?: boolean): 'p' | 'r' {
-    return isPublic
-      ? // public
-        'p'
-      : // private
-        'r';
+    return isPublic ? 'p' : 'r';
   }
+
   private _mimeToExtensionSafe(mime?: string): string {
     if (!mime) return randomBytes(16).toString('hex');
+
     const safeMap: Record<string, string> = {
       'image/jpeg': 'jpg',
       'image/jpg': 'jpg',
@@ -56,17 +58,28 @@ export class StorageService {
       'video/webm': 'webm',
       'video/ogg': 'ogv',
     };
+
     return safeMap[mime] ?? randomBytes(8).toString('hex');
   }
 
   private _resolveEnvPrefix(): StorageEnvPrefix {
     return registerEnv.IS_DEVELOPMENT ? StorageEnvPrefix.SANDBOX : StorageEnvPrefix.LIVE;
   }
+
   private _generateObjectPath(input: Pick<UploadAndRegisterMedia, 'bucket' | 'userId' | 'mimeType' | 'isPublic'>): string {
     const envPrefix = this._resolveEnvPrefix();
     const visibility = this._resolveVisibilityPrefix(input.isPublic);
     const salt = randomBytes(16).toString('hex');
-    const entropy = [input.userId, input.bucket, visibility, input.mimeType ?? 'unknown', Date.now(), salt].join('|');
+
+    const entropy = [
+      input.userId,
+      input.bucket,
+      visibility,
+      input.mimeType ?? 'unknown',
+      Date.now(),
+      salt,
+    ].join('|');
+
     const hash = createHash('sha256').update(entropy).digest('hex');
 
     const dir1 = hash.slice(0, 2);
@@ -77,53 +90,83 @@ export class StorageService {
 
     return `${envPrefix}/${visibility}/${dir1}/${dir2}/${dir3}/${hash}${ext ? '.' + ext : ''}`;
   }
+
   private _validateMime(inputMime?: string, detectedMime?: string, options?: UploadAndRegisterMediaOption): string {
     const mime = inputMime ?? detectedMime;
 
     if (!mime) throw new BadRequestException('MimeType is required');
 
-    if (!this.SAFE_MIME_TYPES.has(mime)) throw new BadRequestException(`MimeType "${mime}" is not allowed`);
+    if (!this.SAFE_MIME_TYPES.has(mime)) {
+      throw new BadRequestException(`MimeType "${mime}" is not allowed`);
+    }
 
     if (options?.allowedMimeTypes?.length) {
       for (const m of options.allowedMimeTypes) {
-        if (!this.SAFE_MIME_TYPES.has(m)) throw new BadRequestException(`Caller MimeType "${m}" is not allowed`);
+        if (!this.SAFE_MIME_TYPES.has(m)) {
+          throw new BadRequestException(`Caller MimeType "${m}" is not allowed`);
+        }
       }
 
-      if (!options.allowedMimeTypes.includes(mime)) throw new BadRequestException('MimeType does not match allowedMimeTypes');
+      if (!options.allowedMimeTypes.includes(mime)) {
+        throw new BadRequestException('MimeType does not match allowedMimeTypes');
+      }
     }
 
-    if (inputMime && detectedMime && inputMime !== detectedMime)
+    if (inputMime && detectedMime && inputMime !== detectedMime) {
       throw new BadRequestException({
         message: 'Provided mimeType does not match file mimeType',
         inputMime,
         detectedMime,
       });
+    }
 
     return mime;
   }
+
   private _validateSize(inputSize?: number, detectedSize?: number, options?: UploadAndRegisterMediaOption) {
     const size = inputSize ?? detectedSize;
 
-    if (!size || size <= 0) throw new BadRequestException('Invalid file size');
+    if (!size || size <= 0) {
+      throw new BadRequestException('Invalid file size');
+    }
 
     if (options?.expectedSize !== undefined) {
       const calcSize = options.expectedSize * 1024 * 1024;
+
       if (size > calcSize) {
         throw new PayloadTooLargeException(`File size exceeds maximum limit (${options.expectedSize}MB)`);
       }
+
       return true;
     }
 
-    if (size > this.DEFAULT_MAX_SIZE) throw new PayloadTooLargeException('File size exceeds maximum limit (10MB)');
+    if (size > this.DEFAULT_MAX_SIZE) {
+      throw new PayloadTooLargeException('File size exceeds maximum limit (10MB)');
+    }
+  }
+
+  private _extractFileMeta(file: unknown): { mimeType?: string; size?: number } {
+    if (typeof file !== 'object' || file === null) {
+      return {};
+    }
+
+    const value = file as Record<string, unknown>;
+
+    return {
+      mimeType: typeof value.mimeType === 'string' ? value.mimeType : undefined,
+      size: typeof value.size === 'number' ? value.size : undefined,
+    };
   }
 
   async isReady(): Promise<StorageHealthStatus> {
     return this.client.healthCheck();
   }
+
   async bucketExists(bucketName: string): Promise<boolean> {
     const cacheKey = this._bucketExistsCacheKey(bucketName);
 
     const cached = await this.redis.get(cacheKey);
+
     if (cached !== null) {
       return +cached === 1;
     }
@@ -134,10 +177,10 @@ export class StorageService {
 
     return exists;
   }
-  async createBucket(bucketName: string, isPublic: boolean = false): Promise<boolean> {
+
+  async createBucket(bucketName: string, isPublic = false): Promise<boolean> {
     const created = await this.client.createBucket(bucketName, isPublic);
 
-    // cache sync
     await this.redis.delete(this._bucketExistsCacheKey(bucketName));
 
     if (created) {
@@ -146,10 +189,10 @@ export class StorageService {
 
     return created;
   }
+
   async removeBucket(bucketName: string): Promise<boolean> {
     const removed = await this.client.removeBucket(bucketName);
 
-    // cache sync
     await this.redis.delete(this._bucketExistsCacheKey(bucketName));
 
     if (removed) {
@@ -158,30 +201,29 @@ export class StorageService {
 
     return removed;
   }
+
   async uploadAndRegisterMedia(input: UploadAndRegisterMedia, options?: UploadAndRegisterMediaOption): Promise<UploadAndRegisterMediaDto> {
-    /**
-     * Resolve & validate bucket
-     */
     const bucket = this._resolveBucket(input);
+
     const bucketExists = await this.client.bucketExistsAndCreate(bucket, input.isPublic ?? false);
-    if (!bucketExists) throw new NotFoundException('Bucket does not exist');
 
-    /**
-     * Validate file existence
-     */
-    if (!input.file) throw new BadRequestException('File is required');
+    if (!bucketExists) {
+      throw new NotFoundException('Bucket does not exist');
+    }
 
-    /**
-     * Validate mime & size
-     */
-    const detectedMime = (input.file as any)?.mimeType;
-    const detectedSize = (input.file as any)?.size;
+    if (!input.file) {
+      throw new BadRequestException('File is required');
+    }
+
+    const fileMeta = this._extractFileMeta(input.file);
+
+    const detectedMime = fileMeta.mimeType;
+    const detectedSize = fileMeta.size;
+
     const finalMime = this._validateMime(input.mimeType, detectedMime, options);
+
     this._validateSize(input.size, detectedSize, options);
 
-    /**
-     * Generate object path
-     */
     const objectName =
       input.objectName ??
       this._generateObjectPath({
@@ -191,22 +233,16 @@ export class StorageService {
         isPublic: input.isPublic,
       });
 
-    /**
-     * Upload to MinIO
-     */
     await this.client.putObject(bucket, objectName, input.file, detectedSize, {
       contentType: finalMime,
     });
 
-    /**
-     * Verify object exists (metadata)
-     */
     const objectInfo = await this.client.getObjectInfo(bucket, objectName);
-    if (!objectInfo) throw new InternalServerErrorException('Upload failed: object not found after upload');
 
-    /**
-     * Save to database
-     */
+    if (!objectInfo) {
+      throw new InternalServerErrorException('Upload failed: object not found after upload');
+    }
+
     try {
       return await this.prisma.media.create({
         data: {
@@ -219,12 +255,17 @@ export class StorageService {
           userId: input.userId,
         },
       });
-    } catch (error) {
+    } catch (error: unknown) {
       try {
         await this.client.removeObject(bucket, objectName);
         this.logger.warn(`Rollback: object removed after DB failure -> ${bucket}/${objectName}`);
-      } catch (rollbackError) {
-        this.logger.error(`Rollback failed: could not remove object ${bucket}/${objectName}`, (rollbackError as any)?.stack);
+      } catch (rollbackError: unknown) {
+        const rollbackStack = rollbackError instanceof Error ? rollbackError.stack : undefined;
+
+        this.logger.error(
+          `Rollback failed: could not remove object ${bucket}/${objectName}`,
+          rollbackStack
+        );
       }
 
       throw error;

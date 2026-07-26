@@ -1,10 +1,5 @@
-import { Controller, Post, UploadedFile, UseInterceptors, Body, BadRequestException } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Controller } from '@nestjs/common';
 import { StorageService } from './storage.service';
-import { EnumStorageBucket } from './enums/storage.enum';
-import { UploadAndRegisterMediaOption } from './interface/upload-register-media.interface';
-import { StandardResponseDto } from '../../shared/dto';
 
 @Controller('storage')
 export class StorageController {

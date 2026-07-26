@@ -68,7 +68,7 @@ export class UsersService {
     });
 
     // تخصیص پرمیشن های پیش فرض
-    this.permissionsService.assignDefaultPermissions(newUser.id);
+    await this.permissionsService.assignDefaultPermissions(newUser.id);
 
     // گرفتن مجدد دیتای کاربر
     const user = await this.findOneWithUserId(newUser.id);
@@ -105,8 +105,10 @@ export class UsersService {
         message: 'اطلاعات کاربر به روز شد.',
         data: updateUser,
       });
-    } catch (e: any) {
-      if (e?.code === 'P2025') throw new NotFoundException('User not found');
+    } catch (e: unknown) {
+      if (e instanceof Error && 'code' in e && e.code === 'P2025') {
+        throw new NotFoundException('کاربر یافت نشد');
+      }
       throw e;
     }
   }

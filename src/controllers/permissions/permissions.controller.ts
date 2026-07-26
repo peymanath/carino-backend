@@ -1,6 +1,5 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Req, UsePipes, ValidationPipe } from '@nestjs/common';
-import { ApiBadRequestResponse, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { ProblemDetailsDto, StandardResponseDto } from '../../shared/dto';
+import { StandardResponseDto } from '../../shared/dto';
 import { PermissionsService } from './permissions.service';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
@@ -14,15 +13,12 @@ import { HasAuthentication } from '../../shared/decorators/auth-swagger.decorato
 
 @HasAuthentication()
 @UsePipes(new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true }))
-@ApiBadRequestResponse({ description: 'Bad Request', type: ProblemDetailsDto })
-@ApiTags("Panel Permissions")
 @Controller('panel/permissions')
 export class PermissionsController {
   constructor(private readonly permissionsService: PermissionsService) {}
 
   @Post('categories')
   @HttpCode(HttpStatus.CREATED)
-  @ApiCreatedResponse({ description: 'Category created', type: PermissionCategoryDto })
   async createCategory(@Body() dto: CreatePermissionCategoryDto): Promise<StandardResponseDto<PermissionCategoryDto>> {
     return this.permissionsService.createCategory(dto);
   }
@@ -35,7 +31,6 @@ export class PermissionsController {
 
   @Get('categories/:id')
   @HttpCode(HttpStatus.OK)
-  @ApiParam({ name: 'id', description: 'Category id', type: Number })
   async findCategoryById(@Param('id') id: number): Promise<StandardResponseDto<PermissionCategoryDto>> {
     return this.permissionsService.findCategoryById(id);
   }
@@ -48,7 +43,6 @@ export class PermissionsController {
 
   @Delete('categories/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiParam({ name: 'id', description: 'Category id', type: Number })
   async removeCategory(@Param('id') id: number): Promise<void> {
     return this.permissionsService.removeCategory(id);
   }
@@ -79,7 +73,6 @@ export class PermissionsController {
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  @ApiParam({ name: 'id', description: 'Permission id', type: Number })
   async findPermissionById(@Param('id') id: number): Promise<StandardResponseDto<PermissionDto>> {
     return this.permissionsService.findPermissionById(id);
   }
@@ -92,8 +85,6 @@ export class PermissionsController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiParam({ name: 'id', description: 'Permission id', type: Number })
-  @ApiNoContentResponse({ description: 'Permission deleted' })
   async removePermission(@Param('id') id: number): Promise<void> {
     return this.permissionsService.removePermission(id);
   }

@@ -1,5 +1,4 @@
-import { Injectable, Logger } from "@nestjs/common";
-import axios from "axios";
+import { Injectable } from "@nestjs/common";
 // import * as sd from "./apis.json";
 
 @Injectable()

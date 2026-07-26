@@ -8,7 +8,7 @@ export class JobsService {
   constructor(@InjectQueue("jobs") private readonly jobsQueue: Queue) {}
 
   async addJob<K extends keyof JobDefinitions>(name: K, data: JobDefinitions[K], jobId: string, everyMs?: number): Promise<{ job: Job; id: string | undefined }> {
-    const job = await this.jobsQueue.add(name as string, data as any, {
+    const job = await this.jobsQueue.add(name, data as any, {
       repeat: everyMs ? { every: everyMs } : undefined,
       removeOnComplete: true,
       removeOnFail: false,
@@ -54,7 +54,7 @@ export class JobsService {
     if (oldJob?.key) {
       await this.jobsQueue.removeJobScheduler(oldJob.key);
     }
-    const job = await this.jobsQueue.add(name as string, data as any, {
+    const job = await this.jobsQueue.add(name, data as any, {
       repeat: newEveryMs ? { every: newEveryMs } : undefined,
       removeOnComplete: true,
       removeOnFail: false,

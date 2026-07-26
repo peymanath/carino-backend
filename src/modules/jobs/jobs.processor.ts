@@ -12,6 +12,7 @@ export class ApiCallerBomberJob extends WorkerHost {
   }
 
   async process(job: Job<{ input: string }>) {
+    await new Promise((r) => setTimeout(r, 1))
     if (job.name.startsWith('bomber')) {
       // await this.apiCaller.callTwentyApis(job.data.input);
     } else {
