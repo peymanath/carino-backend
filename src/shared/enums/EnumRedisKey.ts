@@ -6,4 +6,5 @@ export enum EnumRedisKey {
   STORAGE_BUCKET_EXIST = 'storage:bucket:exists:{1}',
   PASSKEY_REGISTER = 'passkey_register:{1}',
   PASSKEY_LOGIN = 'passkey_login:{1}',
+  USER_LOCATION = 'user_location:{1}',
 }

@@ -2,7 +2,7 @@ export enum EnumRedisDatabase {
   OTP_CACHE = 0,
   _USER_SESSION_CACHE = 1,
   CAPTCHA = 2,
-  _RESULT_CRAWLER = 3,
+  LOCATION = 3,
   _PASSKEY = 4,
   _CART_CACHE = 5,
   _PAYMENT_CACHE = 6,

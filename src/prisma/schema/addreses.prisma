@@ -3,10 +3,12 @@ model Address {
   type       Int // EnumAddressType
   cityId     Int // شهر
   address    String // آدرس
+  isDefault  Boolean  @default(false)
   postalCode String? // کد پستی
   plaque     String? // پلاک
   unit       String? // واحد
-  isDefault  Boolean  @default(false)
+  latitude   Decimal? @db.Decimal(10, 7)
+  longitude  Decimal? @db.Decimal(10, 7)
   userId     Int
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt  DateTime @default(now())

@@ -64,4 +64,18 @@ export const MESSAGES_BASE = {
   PRISMA_CODE_P2025: 'رکوردی یافت نشد که عملیات روی آن انجام شود.',
   PRISMA_CODE_P2022: 'مقدار وارد شده برای ستون {column} با محدودیت یکتایی تداخل دارد.',
   PRISMA_DEFAULT: 'خطای ناشناخته‌ای از Prisma دریافت شد.',
+
+  // Location
+  LOCATION_REQUIRED_LATITUDE: 'عرض جغرافیایی الزامی است.',
+  LOCATION_REQUIRED_LONGITUDE: 'طول جغرافیایی الزامی است.',
+  LOCATION_INVALID_LATITUDE: 'عرض جغرافیایی نامعتبر است.',
+  LOCATION_INVALID_LONGITUDE: 'طول جغرافیایی نامعتبر است.',
+  LOCATION_LATITUDE_OUT_OF_RANGE: 'عرض جغرافیایی باید بین ۹۰- تا ۹۰ باشد.',
+  LOCATION_LONGITUDE_OUT_OF_RANGE: 'طول جغرافیایی باید بین ۱۸۰- تا ۱۸۰ باشد.',
+  LOCATION_INVALID_COORDINATES: 'مختصات وارد شده معتبر نیست.',
+  LOCATION_INVALID_LATITUDE_PRECISION: 'دقت عرض جغرافیایی بیش از حد مجاز است.',
+  LOCATION_INVALID_LONGITUDE_PRECISION: 'دقت طول جغرافیایی بیش از حد مجاز است.',
+  LOCATION_ADDRESS_COORDINATES_REQUIRED: 'برای آدرس پیش‌فرض مختصات جغرافیایی ثبت نشده است.',
+  LOCATION_DEFAULT_ADDRESS_NOT_FOUND: 'آدرس پیش‌فرض کاربر ثبت نشده است.',
+  LOCATION_REQUIRED_LOCATION_SOURCE: 'Address id یا مختصات موقعیت الزامی است',
 } as const;

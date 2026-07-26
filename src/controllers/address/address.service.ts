@@ -47,11 +47,11 @@ export class AddressService {
 
   // #region findForUser
   async findAllForUser(userId: number): Promise<StandardResponseDto<AddressResultDto[]>> {
-    const getUserId = await this.getUser(userId);
+    const validatedUserId = await this.getUser(userId);
 
     const data = await this.prisma.address.findMany({
       where: {
-        userId: getUserId,
+        userId: validatedUserId,
       },
 
       include: {
@@ -96,12 +96,12 @@ export class AddressService {
 
   // #region findOneForUser
   async findOneForUser(id: number, userId: number): Promise<StandardResponseDto<AddressResultDto>> {
-    const getUserId = await this.getUser(userId);
+    const validatedUserId = await this.getUser(userId);
 
     const address = await this.prisma.address.findUnique({
       where: {
         id,
-        userId: getUserId,
+        userId: validatedUserId,
       },
 
       include: {
@@ -119,12 +119,12 @@ export class AddressService {
 
   // #region create
   async create(dto: CreateAddressDto, userId: number): Promise<StandardResponseDto<AddressResultDto>> {
-    const getUserId = await this.getUser(userId);
+    const validatedUserId = await this.getUser(userId);
 
     if (dto.isDefault) {
       await this.prisma.address.updateMany({
         where: {
-          userId: getUserId,
+          userId: validatedUserId,
         },
 
         data: {
@@ -134,7 +134,7 @@ export class AddressService {
     }
 
     const address = await this.prisma.address.create({
-      data: { ...dto, userId: getUserId },
+      data: { ...dto, userId: validatedUserId },
 
       include: {
         city: true,
@@ -190,13 +190,13 @@ export class AddressService {
   async updateForUser(dto: UpdateAddressDto, userId: number): Promise<StandardResponseDto<AddressResultDto>> {
     const { id, ...data } = dto;
 
-    const getUserId = await this.getUser(userId);
+    const validatedUserId = await this.getUser(userId);
 
     try {
-      if (data.isDefault && getUserId) {
+      if (data.isDefault && validatedUserId) {
         await this.prisma.address.updateMany({
           where: {
-            userId: getUserId,
+            userId: validatedUserId,
           },
           data: {
             isDefault: false,
@@ -247,13 +247,13 @@ export class AddressService {
 
   // #region removeForUser
   async removeForUser(id: number, userId: number): Promise<void> {
-    const getUserId = await this.getUser(userId);
+    const validatedUserId = await this.getUser(userId);
 
     try {
       await this.prisma.address.delete({
         where: {
           id,
-          userId: getUserId,
+          userId: validatedUserId,
         },
       });
     } catch (e: unknown) {
