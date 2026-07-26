@@ -1,6 +1,5 @@
-set -euo pipefail
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
 
-# pnpm turbo run build || {
-#   echo "❌ pre-push: build failed"
-#   exit 1
-# }
+pnpm check-types
+pnpm build
