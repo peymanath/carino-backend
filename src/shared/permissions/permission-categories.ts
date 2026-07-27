@@ -60,4 +60,25 @@ export const PERMISSION_CATEGORIES = [
       },
     ],
   },
+  {
+    name: 'Places',
+    permissions: [
+      {
+        key: PERMISSIONS.PLACES_CREATE,
+        name: 'Create Places',
+      },
+      {
+        key: PERMISSIONS.PLACES_READ,
+        name: 'Read Places',
+      },
+      {
+        key: PERMISSIONS.PLACES_UPDATE,
+        name: 'Update Places',
+      },
+      {
+        key: PERMISSIONS.PLACES_DELETE,
+        name: 'Delete Places',
+      },
+    ],
+  },
 ] as const;

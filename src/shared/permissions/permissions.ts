@@ -15,6 +15,12 @@ export const PERMISSIONS = {
   ADDRESSES_READ: 'addresses.read',
   ADDRESSES_UPDATE: 'addresses.update',
   ADDRESSES_DELETE: 'addresses.delete',
+
+  // Places
+  PLACES_CREATE: 'places.create',
+  PLACES_READ: 'places.read',
+  PLACES_UPDATE: 'places.update',
+  PLACES_DELETE: 'places.delete',
 } as const;
 
 export type PermissionKey = (typeof PERMISSIONS)[keyof typeof PERMISSIONS];

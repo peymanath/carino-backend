@@ -2,6 +2,7 @@ import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@
 import { Reflector } from '@nestjs/core';
 import { DECORATOR_PERMISSIONS_KEY } from '../decorators/permissions.decorator';
 import { UserWithPermissions } from '../interfaces/user-with-permisstions.interface';
+import { MESSAGES } from '../errors';
 
 type RequestWithUser = {
   user?: UserWithPermissions;
@@ -23,7 +24,7 @@ export class PermissionsGuard implements CanActivate {
     const user = request.user;
 
     if (!user) {
-      throw new ForbiddenException('User not found in request');
+      throw new ForbiddenException(MESSAGES.USER_NOT_FOUND);
     }
 
     const userPermissions = user.permissions.map(permission => permission.key);

@@ -6,6 +6,7 @@ import { QueryUserDto } from './dto/query-user.dto';
 import { StandardPaginatedResponseDto, StandardResponseDto } from '../../shared/dto';
 import { paginateSlice } from '../../shared/utils';
 import { PermissionsService } from '../permissions/permissions.service';
+import { MESSAGES } from '../../shared/errors';
 
 @Injectable()
 export class UsersService {
@@ -125,7 +126,7 @@ export class UsersService {
       },
     });
 
-    if (!user) throw new NotFoundException('User not found');
+    if (!user) throw new NotFoundException(MESSAGES.USER_NOT_FOUND);
 
     await this.prisma.$transaction(async tx => {
       // 1) Soft delete user

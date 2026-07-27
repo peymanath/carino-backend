@@ -1,3 +1,4 @@
+import { GisModule } from './modules/gis/gis.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './controllers/auth/auth.module';
@@ -10,6 +11,8 @@ import { ProfileModule } from './controllers/profile/profile.module';
 import { AddressModule } from './controllers/address/address.module';
 import { DdlModule } from './controllers/ddl/ddl.module';
 import { UserLocationModule } from './controllers/user-location/user-location.module';
+import { LocationModule } from './modules/location/location.module';
+import { PlacesModule } from './controllers/places/places.module';
 
 @Module({
   imports: [
@@ -19,14 +22,16 @@ import { UserLocationModule } from './controllers/user-location/user-location.mo
     }),
     PrismaModule,
     RedisModule,
-
     AuthModule,
     ProfileModule,
     UsersModule,
     PermissionsModule,
     AddressModule,
     DdlModule,
-    UserLocationModule
+    UserLocationModule,
+    LocationModule,
+    GisModule,
+    PlacesModule,
     // SmsManagerModule,
     // StorageModule,
     // PasskeyModule,

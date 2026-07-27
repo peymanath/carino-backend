@@ -7,90 +7,15 @@ import { RedisService } from '../cache/redis.service';
 import { EnumRedisDatabase } from '../../shared/enums/EnumRedisDatabase';
 import { EnumRedisKey } from '../../shared/enums/EnumRedisKey';
 import { buildRedisKey } from '../../shared/utils';
+import { GisService } from '../gis/gis.service';
 
 @Injectable()
 export class LocationService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly redis: RedisService
+    private readonly redis: RedisService,
+    private readonly gis: GisService
   ) {}
-
-  //#region validateLocation
-  validateLocation(latitude: number, longitude: number) {
-    if (latitude === null || latitude === undefined) {
-      throw new BadRequestException({
-        detail: MESSAGES.LOCATION_REQUIRED_LATITUDE,
-        error: 'InvalidLatitude',
-      });
-    }
-
-    if (longitude === null || longitude === undefined) {
-      throw new BadRequestException({
-        detail: MESSAGES.LOCATION_REQUIRED_LONGITUDE,
-        error: 'InvalidLongitude',
-      });
-    }
-
-    if (!Number.isFinite(latitude)) {
-      throw new BadRequestException({
-        detail: MESSAGES.LOCATION_INVALID_LATITUDE,
-        error: 'InvalidLatitude',
-      });
-    }
-
-    if (!Number.isFinite(longitude)) {
-      throw new BadRequestException({
-        detail: MESSAGES.LOCATION_INVALID_LONGITUDE,
-        error: 'InvalidLongitude',
-      });
-    }
-
-    if (latitude < -90 || latitude > 90) {
-      throw new BadRequestException({
-        detail: MESSAGES.LOCATION_LATITUDE_OUT_OF_RANGE,
-        error: 'InvalidLatitudeRange',
-      });
-    }
-
-    if (longitude < -180 || longitude > 180) {
-      throw new BadRequestException({
-        detail: MESSAGES.LOCATION_LONGITUDE_OUT_OF_RANGE,
-        error: 'InvalidLongitudeRange',
-      });
-    }
-
-    if (latitude === 0 && longitude === 0) {
-      throw new BadRequestException({
-        detail: MESSAGES.LOCATION_INVALID_COORDINATES,
-        error: 'InvalidCoordinates',
-      });
-    }
-
-    const normalizedLatitude = Number(latitude.toFixed(7));
-    const normalizedLongitude = Number(longitude.toFixed(7));
-    const latitudeDecimalLength = normalizedLatitude.toString().split('.')[1]?.length ?? 0;
-    const longitudeDecimalLength = normalizedLongitude.toString().split('.')[1]?.length ?? 0;
-
-    if (latitudeDecimalLength > 7) {
-      throw new BadRequestException({
-        detail: MESSAGES.LOCATION_INVALID_LATITUDE_PRECISION,
-        error: 'InvalidLatitudePrecision',
-      });
-    }
-
-    if (longitudeDecimalLength > 7) {
-      throw new BadRequestException({
-        detail: MESSAGES.LOCATION_INVALID_LONGITUDE_PRECISION,
-        error: 'InvalidLongitudePrecision',
-      });
-    }
-
-    return {
-      latitude: normalizedLatitude,
-      longitude: normalizedLongitude,
-    };
-  }
-  //#endregion
 
   //#region Get User Location
   async getUserLocation(userId: number): Promise<GetUserLocationResultDto> {
@@ -118,11 +43,12 @@ export class LocationService {
         });
       }
 
-      const validatedLocation = this.validateLocation(Number(parsedLocation.latitude), Number(parsedLocation.longitude));
+      // Normalize Gis
+      const normalizedCoordinate = this.gis.validateCoordinate(parsedLocation);
 
       return {
-        latitude: validatedLocation.latitude,
-        longitude: validatedLocation.longitude,
+        latitude: normalizedCoordinate.latitude,
+        longitude: normalizedCoordinate.longitude,
         source: EnumLocationSource.Temporary,
       };
     }
@@ -142,22 +68,23 @@ export class LocationService {
 
     const validatedUserId = await this.getUser(userId);
 
-    const validatedLocation = this.validateLocation(Number(latitude), Number(longitude));
+    // Normalize Gis
+    const normalizedCoordinate = this.gis.validateCoordinate({ latitude, longitude });
 
     this.redis.switchDatabaseIfNeeded(EnumRedisDatabase.LOCATION);
 
     const key = buildRedisKey(EnumRedisKey.USER_LOCATION, [validatedUserId]);
 
     const locationData: LocationContextResultDto = {
-      latitude: validatedLocation.latitude,
-      longitude: validatedLocation.longitude,
+      latitude: normalizedCoordinate.latitude,
+      longitude: normalizedCoordinate.longitude,
     };
 
     await this.redis.set(key, JSON.stringify(locationData));
 
     return {
-      latitude: validatedLocation.latitude,
-      longitude: validatedLocation.longitude,
+      latitude: normalizedCoordinate.latitude,
+      longitude: normalizedCoordinate.longitude,
       source: EnumLocationSource.Temporary,
     };
   }
@@ -226,12 +153,14 @@ export class LocationService {
 
     const latitude = Number(address.latitude);
     const longitude = Number(address.longitude);
-    const validatedLocation = this.validateLocation(latitude, longitude);
+
+    // Normalize Gis
+    const normalizedCoordinate = this.gis.validateCoordinate({ latitude, longitude });
 
     return {
       addressId: address.id,
-      latitude: validatedLocation.latitude,
-      longitude: validatedLocation.longitude,
+      latitude: normalizedCoordinate.latitude,
+      longitude: normalizedCoordinate.longitude,
       source: EnumLocationSource.DefaultAddress,
     };
   }

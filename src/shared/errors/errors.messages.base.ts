@@ -19,6 +19,7 @@ export const MESSAGES_BASE = {
 
   // User
   USER_ID_NOT_FOUND: 'کاربر با شناسه «{userId}» پیدا نشد.',
+  USER_NOT_FOUND: 'کاربر پیدا نشد.',
   USER_REQUIRED_ID: 'شناسه کاربر الزامی است.',
 
   // Profile
@@ -89,4 +90,8 @@ export const MESSAGES_BASE = {
   GIS_COORDINATE_INVALID: 'مختصات جغرافیایی معتبر نیست.',
   GIS_COORDINATE_INVALID_LATITUDE_PRECISION: 'دقت عرض جغرافیایی نمی‌تواند بیشتر از ۷ رقم اعشار باشد.',
   GIS_COORDINATE_INVALID_LONGITUDE_PRECISION: 'دقت طول جغرافیایی نمی‌تواند بیشتر از ۷ رقم اعشار باشد.',
+
+
+  // Place
+  PLACE_NOT_FOUND: "مکان یافت نشد."
 } as const;

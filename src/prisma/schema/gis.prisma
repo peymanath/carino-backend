@@ -4,6 +4,7 @@ model PlaceLocation {
     type         Int // EnumPlaceLocationType
     latitude     Decimal      @db.Decimal(10, 7)
     longitude    Decimal      @db.Decimal(10, 7)
+    isDeleted    Boolean      @default(false)
     placeProfile PlaceProfile @relation(fields: [placeId], references: [id])
     createdAt    DateTime     @default(now())
     updatedAt    DateTime     @default(now()) @updatedAt
@@ -19,6 +20,7 @@ model PlaceProfile {
     cityId      Int
     type        Int // EnumPlaceLocationType
     title       String
+    isDeleted   Boolean         @default(false)
     description String?
     coverImage  String?
     logo        String?
