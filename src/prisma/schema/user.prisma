@@ -4,7 +4,7 @@ model User {
   isDeleted        Boolean      @default(false)
   isMobileVerified Boolean      @default(false)
   isActive         Boolean      @default(false)
-  permissions      Permission[] @relation("UserPermissions")
+  permissions      Permission[] @relation("user_permissions")
   uploadedMedia    Media[]      @relation("UserToMedia")
   addresses        Address[]
   profile          UserProfile?
@@ -12,6 +12,7 @@ model User {
   updatedAt        DateTime     @default(now()) @updatedAt
 
   @@unique([mobile, isDeleted])
+  @@map("user")
 }
 
 /**
@@ -25,7 +26,9 @@ model Permission {
   category   PermissionCategory @relation(fields: [categoryId], references: [id], onDelete: Restrict)
   createdAt  DateTime           @default(now())
   updatedAt  DateTime           @default(now()) @updatedAt
-  users      User[]             @relation("UserPermissions")
+  users      User[]             @relation("user_permissions")
+
+  @@map("permission")
 }
 
 model PermissionCategory {
@@ -34,6 +37,8 @@ model PermissionCategory {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @default(now()) @updatedAt
   permissions Permission[]
+
+  @@map("permission_category")
 }
 
 /**
@@ -49,39 +54,10 @@ model UserProfile {
   isDeleted Boolean             @default(false)
   userId    Int                 @unique
   avatarId  Int?
-  jobId     String?             @db.Uuid
   user      User                @relation(fields: [userId], references: [id])
-  job       Job?                @relation(fields: [jobId], references: [id])
   media     Media?              @relation(fields: [avatarId], references: [id])
-  interests InterestSelection[]
   createdAt DateTime            @default(now())
   updatedAt DateTime            @default(now()) @updatedAt
-}
 
-model Job {
-  id        String        @id @default(uuid()) @db.Uuid
-  name      String        @unique
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @default(now()) @updatedAt
-  users     UserProfile[]
-}
-
-model Interest {
-  id        Int                 @id @default(autoincrement())
-  name      String              @unique
-  createdAt DateTime            @default(now())
-  updatedAt DateTime            @default(now()) @updatedAt
-  users     InterestSelection[]
-}
-
-model InterestSelection {
-  id         Int         @id @default(autoincrement())
-  profileId  Int
-  interestId Int
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @default(now()) @updatedAt
-  profile    UserProfile @relation(fields: [profileId], references: [id])
-  interest   Interest    @relation(fields: [interestId], references: [id])
-
-  @@unique([profileId, interestId])
+  @@map("user_profile")
 }

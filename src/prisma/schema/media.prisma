@@ -12,4 +12,6 @@ model Media {
   createdAt DateTime      @default(now())
   updatedAt DateTime      @default(now()) @updatedAt
   users     UserProfile[]
+
+  @@map("media")
 }

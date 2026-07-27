@@ -78,4 +78,15 @@ export const MESSAGES_BASE = {
   LOCATION_ADDRESS_COORDINATES_REQUIRED: 'برای آدرس پیش‌فرض مختصات جغرافیایی ثبت نشده است.',
   LOCATION_DEFAULT_ADDRESS_NOT_FOUND: 'آدرس پیش‌فرض کاربر ثبت نشده است.',
   LOCATION_REQUIRED_LOCATION_SOURCE: 'Address id یا مختصات موقعیت الزامی است',
+
+  // GIS
+  GIS_COORDINATE_REQUIRED_LATITUDE: 'عرض جغرافیایی الزامی است.',
+  GIS_COORDINATE_REQUIRED_LONGITUDE: 'طول جغرافیایی الزامی است.',
+  GIS_COORDINATE_INVALID_LATITUDE: 'عرض جغرافیایی معتبر نیست.',
+  GIS_COORDINATE_INVALID_LONGITUDE: 'طول جغرافیایی معتبر نیست.',
+  GIS_COORDINATE_LATITUDE_OUT_OF_RANGE: 'عرض جغرافیایی باید بین 90- و 90 باشد.',
+  GIS_COORDINATE_LONGITUDE_OUT_OF_RANGE: 'طول جغرافیایی باید بین 180- و 180 باشد.',
+  GIS_COORDINATE_INVALID: 'مختصات جغرافیایی معتبر نیست.',
+  GIS_COORDINATE_INVALID_LATITUDE_PRECISION: 'دقت عرض جغرافیایی نمی‌تواند بیشتر از ۷ رقم اعشار باشد.',
+  GIS_COORDINATE_INVALID_LONGITUDE_PRECISION: 'دقت طول جغرافیایی نمی‌تواند بیشتر از ۷ رقم اعشار باشد.',
 } as const;

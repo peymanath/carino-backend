@@ -13,9 +13,10 @@ model Address {
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now()) @updatedAt
-  city       City    @relation(fields: [cityId], references: [id])
+  city       City     @relation(fields: [cityId], references: [id])
 
   @@index([userId])
+  @@map("address")
 }
 
 model Country {
@@ -24,6 +25,8 @@ model Country {
   provinces Province[]
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
+
+  @@map("country")
 }
 
 model Province {
@@ -36,16 +39,19 @@ model Province {
   updatedAt DateTime @updatedAt
 
   @@index([countryId])
+  @@map("province")
 }
 
 model City {
-  id         Int       @id @default(autoincrement())
-  provinceId Int
-  name       String
-  addresses  Address[]
-  province   Province  @relation(fields: [provinceId], references: [id], onDelete: Cascade)
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  id            Int            @id @default(autoincrement())
+  provinceId    Int
+  name          String
+  addresses     Address[]
+  province      Province       @relation(fields: [provinceId], references: [id], onDelete: Cascade)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  placeProfiles PlaceProfile[]
 
   @@index([provinceId])
+  @@map("city")
 }

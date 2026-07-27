@@ -1,0 +1,36 @@
+model PlaceLocation {
+    id           BigInt       @id @default(autoincrement())
+    placeId      BigInt
+    type         Int // EnumPlaceLocationType
+    latitude     Decimal      @db.Decimal(10, 7)
+    longitude    Decimal      @db.Decimal(10, 7)
+    placeProfile PlaceProfile @relation(fields: [placeId], references: [id])
+    createdAt    DateTime     @default(now())
+    updatedAt    DateTime     @default(now()) @updatedAt
+
+    @@index([latitude, longitude])
+    @@index([type])
+    @@index([type, placeId])
+    @@map("place_location")
+}
+
+model PlaceProfile {
+    id          BigInt          @id @default(autoincrement())
+    cityId      Int
+    type        Int // EnumPlaceLocationType
+    title       String
+    description String?
+    coverImage  String?
+    logo        String?
+    phone       String?
+    mobile      String?
+    website     String?
+    email       String?
+    address     String?
+    city        City            @relation(fields: [cityId], references: [id])
+    locations   PlaceLocation[]
+    createdAt   DateTime        @default(now())
+    updatedAt   DateTime        @default(now()) @updatedAt
+
+    @@map("place_profile")
+}
