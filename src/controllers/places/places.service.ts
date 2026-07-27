@@ -51,7 +51,7 @@ export class PlacesService {
     });
 
     if (!place) {
-      throw new NotFoundException('مکان با این شناسه یافت نشد.');
+      throw new NotFoundException(MESSAGES.fmtNamed('PLACE_ID_NOT_FOUND', { id }));
     }
 
     return new StandardResponseDto({

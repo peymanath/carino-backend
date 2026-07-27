@@ -86,7 +86,7 @@ export class AddressService {
       },
     });
 
-    if (!address) throw new NotFoundException('آدرسی با این شناسه یافت نشد.');
+    if (!address) throw new NotFoundException(MESSAGES.fmtNamed('ADDRESSES_ID_NOT_FOUNT', { id }));
 
     return new StandardResponseDto({
       data: address,
@@ -109,7 +109,7 @@ export class AddressService {
       },
     });
 
-    if (!address) throw new NotFoundException('آدرسی با این شناسه یافت نشد.');
+    if (!address) throw new NotFoundException(MESSAGES.fmtNamed('ADDRESSES_ID_NOT_FOUNT', { id }));
 
     return new StandardResponseDto({
       data: address,
@@ -141,11 +141,7 @@ export class AddressService {
       },
     });
 
-    return new StandardResponseDto({
-      message: 'آدرس جدید اضافه شد.',
-
-      data: address,
-    });
+    return new StandardResponseDto({ data: address });
   }
   // #endregion
 
@@ -172,13 +168,10 @@ export class AddressService {
         },
       });
 
-      return new StandardResponseDto({
-        message: 'آدرس به روز شد.',
-        data: address,
-      });
+      return new StandardResponseDto({ data: address });
     } catch (e: unknown) {
       if (e instanceof Error && 'code' in e && e.code === 'P2025') {
-        throw new NotFoundException('آدرس یافت نشد');
+        throw new NotFoundException(MESSAGES.ADDRESSES_NOT_FOUNT);
       }
 
       throw e;
@@ -214,13 +207,10 @@ export class AddressService {
         },
       });
 
-      return new StandardResponseDto({
-        message: 'آدرس به روز شد.',
-        data: address,
-      });
+      return new StandardResponseDto({ data: address });
     } catch (e: unknown) {
       if (e instanceof Error && 'code' in e && e.code === 'P2025') {
-        throw new NotFoundException('آدرس یافت نشد');
+        throw new NotFoundException(MESSAGES.ADDRESSES_NOT_FOUNT);
       }
 
       throw e;
@@ -238,7 +228,7 @@ export class AddressService {
       });
     } catch (e: unknown) {
       if (e instanceof Error && 'code' in e && e.code === 'P2025') {
-        throw new NotFoundException('آدرس یافت نشد');
+        throw new NotFoundException(MESSAGES.ADDRESSES_NOT_FOUNT);
       }
       throw e;
     }
@@ -258,7 +248,7 @@ export class AddressService {
       });
     } catch (e: unknown) {
       if (e instanceof Error && 'code' in e && e.code === 'P2025') {
-        throw new NotFoundException('آدرس یافت نشد');
+        throw new NotFoundException(MESSAGES.ADDRESSES_NOT_FOUNT);
       }
       throw e;
     }

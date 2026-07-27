@@ -47,7 +47,7 @@ export class StorageController {
   // @UseInterceptors(FileInterceptor('file'))
   // async upload(@UploadedFile() file: any, @Body() body: any) {
   //   if (!file) {
-  //     throw new BadRequestException('File is required');
+  //     throw new BadRequestException(MESSAGES.STORAGE_FILE_REQUIRED);
   //   }
 
   //   const options: UploadAndRegisterMediaOption = {};

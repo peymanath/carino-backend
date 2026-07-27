@@ -75,10 +75,7 @@ export class PermissionsService {
       orderBy: { id: 'asc' },
     });
 
-    return new StandardResponseDto({
-      message: MESSAGES.RECEIVED_DATA,
-      data: permissionCategories,
-    });
+    return new StandardResponseDto({ data: permissionCategories });
   }
   // #endregion
 
@@ -88,10 +85,7 @@ export class PermissionsService {
 
     if (!permissionCategory) throw new NotFoundException({ detail: MESSAGES.fmt('PERMISSION_CATEGORY_NOT_FOUND', id) });
 
-    return new StandardResponseDto({
-      message: MESSAGES.RECEIVED_DATA,
-      data: permissionCategory,
-    });
+    return new StandardResponseDto({ data: permissionCategory });
   }
   // #endregion
 
@@ -107,15 +101,12 @@ export class PermissionsService {
       if (conflict) throw new BadRequestException({ detail: MESSAGES.fmt('PERMISSION_CATEGORY_NAME_EXISTS', updateDto.id) });
     }
 
-    const updatedCategoryPermistion = await this.prisma.permissionCategory.update({
+    const updatedCategoryPermission = await this.prisma.permissionCategory.update({
       where: { id: updateDto.id },
       data: { name: updateDto.name },
     });
 
-    return new StandardResponseDto({
-      message: MESSAGES.UPDATED_DATA,
-      data: updatedCategoryPermistion,
-    });
+    return new StandardResponseDto({ data: updatedCategoryPermission });
   }
   // #endregion
 
@@ -185,10 +176,7 @@ export class PermissionsService {
       })
     );
 
-    return new StandardResponseDto({
-      message: MESSAGES.RECEIVED_DATA,
-      data: data,
-    });
+    return new StandardResponseDto({ data: data });
   }
   // #endregion
 
@@ -199,10 +187,7 @@ export class PermissionsService {
     });
     if (!permission) throw new NotFoundException({ detail: MESSAGES.fmtNamed('PERMISSION_NOT_FOUND', { id }) });
 
-    return new StandardResponseDto({
-      message: MESSAGES.RECEIVED_DATA,
-      data: permission,
-    });
+    return new StandardResponseDto({ data: permission });
   }
   // #endregion
 
@@ -220,7 +205,7 @@ export class PermissionsService {
 
     await this.validateCategory(updateDto.categoryId);
 
-    const updatedPermistion = await this.prisma.permission.update({
+    const updatedPermission = await this.prisma.permission.update({
       where: { id: updateDto.id },
       data: {
         key: updateDto.key,
@@ -228,10 +213,7 @@ export class PermissionsService {
       },
     });
 
-    return new StandardResponseDto({
-      message: MESSAGES.UPDATED_DATA,
-      data: updatedPermistion,
-    });
+    return new StandardResponseDto({ data: updatedPermission });
   }
   // #endregion
 
@@ -305,7 +287,7 @@ export class PermissionsService {
   // #region getForPermissionWithUserId
   async getForPermissionWithUserId(userId: number): Promise<StandardResponseDto<PermissionGetForUserDto>> {
     if (!userId) {
-      throw new BadRequestException('User ID is required');
+      throw new BadRequestException(MESSAGES.USER_REQUIRED_ID);
     }
 
     const userData = await this.prisma.user.findUnique({
@@ -314,7 +296,7 @@ export class PermissionsService {
     });
 
     if (!userData) {
-      throw new NotFoundException(`User with ID ${userId} not found`);
+      throw new NotFoundException(MESSAGES.fmtNamed('USER_ID_NOT_FOUND', { userId }));
     }
 
     return new StandardResponseDto({

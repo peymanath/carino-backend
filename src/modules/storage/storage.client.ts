@@ -3,6 +3,7 @@ import { Client as MinioClient } from 'minio';
 import { MinioConfig, PutObjectOptions, StorageHealthStatus, StorageObjectInfo, StorageReadable } from './interface/storage-driver.interface';
 import { registerEnv } from '../../config/env.config';
 import { Readable } from 'node:stream';
+import { MESSAGES } from '../../shared/errors';
 
 export class StorageClient {
   private readonly client: MinioClient;
@@ -26,30 +27,30 @@ export class StorageClient {
 
     for (const key of required) {
       if (!config[key]) {
-        throw new InternalServerErrorException(`MinIO config "${key}" is required`);
+        throw new InternalServerErrorException(MESSAGES.fmtNamed('STORAGE_MINIO_CONFIG_REQUIRED', { key }));
       }
     }
   }
 
   private _validateBucketName(bucketName: string) {
     if (!bucketName || typeof bucketName !== 'string') {
-      throw new BadRequestException('Bucket name must be a non-empty string');
+      throw new BadRequestException(MESSAGES.STORAGE_BUCKET_NAME_REQUIRED);
     }
 
     const normalized = bucketName.trim();
 
     if (normalized.length < 3 || normalized.length > 63) {
-      throw new BadRequestException('Bucket name must be between 3 and 63 characters');
+      throw new BadRequestException(MESSAGES.fmtNamed('STORAGE_BUCKET_NAME_LENGTH_INVALID', { min: 3, max: 63 }));
     }
 
     const bucketRegex = /^[a-z0-9][a-z0-9.-]+[a-z0-9]$/;
 
     if (!bucketRegex.test(normalized)) {
-      throw new BadRequestException('Invalid bucket name format');
+      throw new BadRequestException(MESSAGES.STORAGE_BUCKET_NAME_FORMAT_INVALID);
     }
 
     if (normalized.includes('..')) {
-      throw new BadRequestException('Bucket name must not contain consecutive dots');
+      throw new BadRequestException(MESSAGES.STORAGE_BUCKET_NAME_CONSECUTIVE_DOTS_INVALID);
     }
   }
 
@@ -88,11 +89,11 @@ export class StorageClient {
 
   private _objectNameGenerator(bucket: string, objectName: string): string {
     if (!bucket || typeof bucket !== 'string') {
-      throw new BadRequestException('Bucket name must be a non-empty string');
+      throw new BadRequestException(MESSAGES.STORAGE_BUCKET_NAME_REQUIRED);
     }
 
     if (!objectName || typeof objectName !== 'string') {
-      throw new BadRequestException('Object name must be a non-empty string');
+      throw new BadRequestException(MESSAGES.STORAGE_OBJECT_NAME_REQUIRED);
     }
 
     return `${bucket}/${objectName}`;
@@ -191,7 +192,7 @@ export class StorageClient {
     const file: string | Buffer | Readable | undefined = this._isStorageStream(data) ? data.stream : this._isStorageBuffer(data) ? data.buffer : undefined;
 
     if (!file) {
-      throw new BadRequestException('File is required in Client');
+      throw new BadRequestException(MESSAGES.STORAGE_FILE_REQUIRED);
     }
 
     try {
@@ -233,7 +234,7 @@ export class StorageClient {
         Logger.error(`Failed to get object: ${this._objectNameGenerator(bucket, objectName)}`, this._getErrorStack(error), this.loggerContext);
       }
 
-      throw new NotFoundException('Object not found');
+      throw new NotFoundException(MESSAGES.STORAGE_OBJECT_NOT_FOUND);
     }
   }
 
@@ -272,7 +273,7 @@ export class StorageClient {
         Logger.error(`Failed to get object info: ${this._objectNameGenerator(bucket, objectName)}`, this._getErrorStack(error), this.loggerContext);
       }
 
-      throw new NotFoundException('Object info not found');
+      throw new NotFoundException(MESSAGES.STORAGE_OBJECT_INFO_NOT_FOUND);
     }
   }
 
@@ -286,7 +287,7 @@ export class StorageClient {
     try {
       objectInfo = await this.getObjectInfo(bucket, objectName);
     } catch {
-      throw new NotFoundException('File does not exist');
+      throw new NotFoundException(MESSAGES.STORAGE_FILE_NOT_EXIST);
     }
 
     try {
@@ -302,7 +303,7 @@ export class StorageClient {
         Logger.error(`Failed to remove object: ${this._objectNameGenerator(bucket, objectName)}`, this._getErrorStack(error), this.loggerContext);
       }
 
-      throw new InternalServerErrorException('Failed to remove object');
+      throw new InternalServerErrorException(MESSAGES.STORAGE_OBJECT_REMOVE_FAILED);
     }
   }
 }

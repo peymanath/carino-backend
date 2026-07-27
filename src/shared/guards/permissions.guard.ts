@@ -32,7 +32,7 @@ export class PermissionsGuard implements CanActivate {
     const hasAllPermissions = requiredPermissions.every(permission => userPermissions.includes(permission));
 
     if (!hasAllPermissions) {
-      throw new ForbiddenException('You do not have the required permissions');
+      throw new ForbiddenException(MESSAGES.USER_PERMISSION_REQUIRED);
     }
 
     return true;

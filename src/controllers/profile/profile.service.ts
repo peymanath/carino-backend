@@ -44,10 +44,7 @@ export class ProfileService {
       birthDate: user.profile?.birthDate,
     };
 
-    return new StandardResponseDto({
-      data: mapProfile,
-      message: MESSAGES.RECEIVED_DATA,
-    });
+    return new StandardResponseDto({ data: mapProfile });
   }
 
   async updateProfile(userId: number, dto: UpdateProfileDto): Promise<StandardResponseDto<void>> {
@@ -81,13 +78,11 @@ export class ProfileService {
       },
     });
 
-    return new StandardResponseDto({
-      message: MESSAGES.PROFILE_UPDATED,
-    });
+    return new StandardResponseDto();
   }
   async uploadImageProfile(userId: number, file: Express.Multer.File): Promise<StandardResponseDto<ProfileImageUploadDto>> {
     if (!file) {
-      throw new BadRequestException('File is required');
+      throw new BadRequestException(MESSAGES.FILE_REQUIRED);
     }
     const media = await this.storage.uploadAndRegisterMedia(
       {
@@ -103,12 +98,6 @@ export class ProfileService {
       }
     );
 
-    return new StandardResponseDto({
-      message: MESSAGES.PROFILE_UPDATED,
-      data: {
-        id: media.id,
-        url: media.url,
-      },
-    });
+    return new StandardResponseDto({ data: { id: media.id, url: media.url } });
   }
 }

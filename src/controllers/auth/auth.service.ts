@@ -101,7 +101,6 @@ export class AuthService {
       });
 
       return new StandardResponseDto({
-        message: MESSAGES.fmtNamed('AUTH_COMPLETE_PROFILE', {}),
         data: {
           firstName: updateUser.profile?.firstName as string,
           lastName: updateUser.profile?.lastName as string,
@@ -112,7 +111,7 @@ export class AuthService {
       });
     } catch (e: unknown) {
       if (e instanceof Error && 'code' in e && e.code === 'P2025') {
-        throw new NotFoundException('کاربر یافت نشد');
+        throw new NotFoundException(MESSAGES.USER_NOT_FOUND);
       }
       throw e;
     }
@@ -144,7 +143,7 @@ export class AuthService {
     return this.permissionsService.getForPermissionWithUserId(userId);
   }
 
-  private async finishAuth(user: User, isNewUser: boolean, message: string): Promise<StandardResponseDto<OTPVerificationResultDto>> {
+  private async finishAuth(user: User, isNewUser: boolean): Promise<StandardResponseDto<OTPVerificationResultDto>> {
     /**
      * Get User Profile and Token and Permissions
      */
@@ -160,7 +159,6 @@ export class AuthService {
     await Promise.all([this.redis.delete(otpKey), this.redis.delete(timestampKey)]);
 
     return new StandardResponseDto({
-      message,
       data: {
         isNewUser,
         profile: profile
@@ -184,7 +182,7 @@ export class AuthService {
 
   private async loginUser(user: User & { profile: UserProfile | null }): Promise<StandardResponseDto<OTPVerificationResultDto>> {
     const isNewUser = !this.isProfileComplete(user.profile);
-    return this.finishAuth(user, isNewUser, MESSAGES.AUTH_LOGIN_SUCCESS);
+    return this.finishAuth(user, isNewUser);
   }
 
   public async publicLoginUser(user: User & { profile: UserProfile | null }): Promise<StandardResponseDto<OTPVerificationResultDto>> {
@@ -208,7 +206,7 @@ export class AuthService {
     // تاخیر برای دریافت دیتا
     await new Promise(r => setTimeout(() => r, 1000));
 
-    return this.finishAuth(newUser, true, MESSAGES.AUTH_REGISTER_SUCCESS);
+    return this.finishAuth(newUser, true);
   }
 
   async validateUser(mobile: string): Promise<(User & { profile: UserProfile | null }) | null> {

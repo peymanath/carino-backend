@@ -1,7 +1,3 @@
- 
- 
- 
-
 import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy, StrategyOptions } from 'passport-jwt';
@@ -10,6 +6,7 @@ import type { JwtStandardClaims } from '../../../shared/interfaces/jwt-standard-
 import { fromB64 } from '../../../shared/utils';
 import { UserWithPermissions } from '../../../shared/interfaces/user-with-permisstions.interface';
 import { ConfigService } from '@nestjs/config';
+import { MESSAGES } from '../../../shared/errors';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -40,7 +37,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     const userId = typeof rawSub === 'number' ? rawSub : typeof rawSub === 'string' && rawSub.trim() !== '' ? Number.parseInt(rawSub, 10) : NaN;
 
     if (!Number.isFinite(userId)) {
-      throw new UnauthorizedException('توکن نامعتبر است.');
+      throw new UnauthorizedException(MESSAGES.AUTH_TOKEN_INVALID);
     }
 
     const user = await this.prisma.user.findUnique({
@@ -49,15 +46,15 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
 
     if (!user) {
-      throw new UnauthorizedException('حساب کاربری یافت نشد.');
+      throw new UnauthorizedException(MESSAGES.AUTH_USER_NOT_FOUND);
     }
 
     if (user.isDeleted) {
-      throw new ForbiddenException('حساب کاربری مسدود است. با پشتیبانی در ارتباط باشید.');
+      throw new ForbiddenException(MESSAGES.AUTH_USER_BLOCKED);
     }
 
     if (!user.isActive) {
-      throw new ForbiddenException('حساب کاربری غیرفعال شده است. با پشتیبانی در ارتباط باشید.');
+      throw new ForbiddenException(MESSAGES.AUTH_USER_INACTIVE);
     }
 
     return user;

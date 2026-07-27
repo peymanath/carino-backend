@@ -2,6 +2,7 @@ import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from '@nes
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { StandardPaginatedResponseDto, StandardResponseDto } from '../dto';
+import { MESSAGES } from '../errors';
 
 type ResponsePayload = {
   message?: string;
@@ -27,14 +28,14 @@ export class TransformResponseInterceptor implements NestInterceptor<unknown, St
 
         if (rest.meta !== undefined || rest.page !== undefined) {
           return {
-            message: message ?? 'درخواست با موفقیت انجام شد',
+            message: message ?? MESSAGES.COMMON_SUCCESS,
             data: inner ?? rest,
             meta: meta ?? {},
           } as StandardPaginatedResponseDto<unknown>;
         }
 
         return {
-          message: message ?? 'درخواست با موفقیت انجام شد',
+          message: message ?? MESSAGES.COMMON_SUCCESS,
           data: inner ?? res,
         };
       })

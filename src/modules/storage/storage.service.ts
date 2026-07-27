@@ -9,6 +9,7 @@ import { UploadAndRegisterMedia, UploadAndRegisterMediaDto, UploadAndRegisterMed
 import { EnumStorageBucket, StorageEnvPrefix } from './enums/storage.enum';
 import { randomBytes, createHash } from 'crypto';
 import { registerEnv } from '../../config/env.config';
+import { MESSAGES } from '../../shared/errors';
 
 @Injectable()
 export class StorageService {
@@ -29,7 +30,7 @@ export class StorageService {
 
   private _resolveBucket(input: UploadAndRegisterMedia): EnumStorageBucket {
     if (!Object.values(EnumStorageBucket).includes(input.bucket)) {
-      throw new BadRequestException('Invalid storage bucket');
+      throw new BadRequestException(MESSAGES.STORAGE_BUCKET_INVALID);
     }
 
     return input.bucket;
@@ -71,14 +72,7 @@ export class StorageService {
     const visibility = this._resolveVisibilityPrefix(input.isPublic);
     const salt = randomBytes(16).toString('hex');
 
-    const entropy = [
-      input.userId,
-      input.bucket,
-      visibility,
-      input.mimeType ?? 'unknown',
-      Date.now(),
-      salt,
-    ].join('|');
+    const entropy = [input.userId, input.bucket, visibility, input.mimeType ?? 'unknown', Date.now(), salt].join('|');
 
     const hash = createHash('sha256').update(entropy).digest('hex');
 
@@ -94,27 +88,27 @@ export class StorageService {
   private _validateMime(inputMime?: string, detectedMime?: string, options?: UploadAndRegisterMediaOption): string {
     const mime = inputMime ?? detectedMime;
 
-    if (!mime) throw new BadRequestException('MimeType is required');
+    if (!mime) throw new BadRequestException(MESSAGES.STORAGE_MIMETYPE_REQUIRED);
 
     if (!this.SAFE_MIME_TYPES.has(mime)) {
-      throw new BadRequestException(`MimeType "${mime}" is not allowed`);
+      throw new BadRequestException(MESSAGES.fmtNamed('STORAGE_MIMETYPE_NOT_ALLOWED', { mime }));
     }
 
     if (options?.allowedMimeTypes?.length) {
       for (const m of options.allowedMimeTypes) {
         if (!this.SAFE_MIME_TYPES.has(m)) {
-          throw new BadRequestException(`Caller MimeType "${m}" is not allowed`);
+          throw new BadRequestException(MESSAGES.fmtNamed('STORAGE_CALLER_MIMETYPE_NOT_ALLOWED', { mime: m }));
         }
       }
 
       if (!options.allowedMimeTypes.includes(mime)) {
-        throw new BadRequestException('MimeType does not match allowedMimeTypes');
+        throw new BadRequestException(MESSAGES.STORAGE_MIMETYPE_NOT_MATCH_ALLOWED);
       }
     }
 
     if (inputMime && detectedMime && inputMime !== detectedMime) {
       throw new BadRequestException({
-        message: 'Provided mimeType does not match file mimeType',
+        message: MESSAGES.STORAGE_MIMETYPE_FILE_NOT_MATCH,
         inputMime,
         detectedMime,
       });
@@ -127,21 +121,21 @@ export class StorageService {
     const size = inputSize ?? detectedSize;
 
     if (!size || size <= 0) {
-      throw new BadRequestException('Invalid file size');
+      throw new BadRequestException(MESSAGES.STORAGE_FILE_SIZE_INVALID);
     }
 
     if (options?.expectedSize !== undefined) {
       const calcSize = options.expectedSize * 1024 * 1024;
 
       if (size > calcSize) {
-        throw new PayloadTooLargeException(`File size exceeds maximum limit (${options.expectedSize}MB)`);
+        throw new PayloadTooLargeException(MESSAGES.fmtNamed('STORAGE_FILE_SIZE_EXCEEDED_WITH_LIMIT', { limit: options.expectedSize }));
       }
 
       return true;
     }
 
     if (size > this.DEFAULT_MAX_SIZE) {
-      throw new PayloadTooLargeException('File size exceeds maximum limit (10MB)');
+      throw new PayloadTooLargeException(MESSAGES.fmtNamed('STORAGE_FILE_SIZE_EXCEEDED_WITH_LIMIT', { limit: 10 }));
     }
   }
 
@@ -208,11 +202,11 @@ export class StorageService {
     const bucketExists = await this.client.bucketExistsAndCreate(bucket, input.isPublic ?? false);
 
     if (!bucketExists) {
-      throw new NotFoundException('Bucket does not exist');
+      throw new NotFoundException(MESSAGES.STORAGE_BUCKET_NOT_FOUND);
     }
 
     if (!input.file) {
-      throw new BadRequestException('File is required');
+      throw new BadRequestException(MESSAGES.STORAGE_FILE_REQUIRED);
     }
 
     const fileMeta = this._extractFileMeta(input.file);
@@ -240,7 +234,7 @@ export class StorageService {
     const objectInfo = await this.client.getObjectInfo(bucket, objectName);
 
     if (!objectInfo) {
-      throw new InternalServerErrorException('Upload failed: object not found after upload');
+      throw new InternalServerErrorException(MESSAGES.STORAGE_UPLOAD_OBJECT_NOT_FOUND_AFTER_UPLOAD);
     }
 
     try {
@@ -262,10 +256,7 @@ export class StorageService {
       } catch (rollbackError: unknown) {
         const rollbackStack = rollbackError instanceof Error ? rollbackError.stack : undefined;
 
-        this.logger.error(
-          `Rollback failed: could not remove object ${bucket}/${objectName}`,
-          rollbackStack
-        );
+        this.logger.error(`Rollback failed: could not remove object ${bucket}/${objectName}`, rollbackStack);
       }
 
       throw error;

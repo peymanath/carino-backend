@@ -1,4 +1,8 @@
 export const MESSAGES_BASE = {
+
+  // Common
+  COMMON_SUCCESS: 'درخواست با موفقیت انجام شد.',
+  
   // Auth
   AUTH_INVALID_MOBILE: 'شماره موبایل نامعتبر است.',
   AUTH_REQUIRED_MOBILE: 'شماره موبایل الزامی است.',
@@ -6,25 +10,39 @@ export const MESSAGES_BASE = {
   AUTH_SEND_OTP_WAITING: `لطفاً «{waitMsg}» دیگر تلاش کنید.`,
   AUTH_RECIVED_OTP_WRONG: 'کد تایید اشتباه است.',
   AUTH_OTP_CODE_INVALIDATE: 'کد OTP منقضی شده است.',
-  AUTH_LOGIN_SUCCESS: 'ورود با موفقیت انجام شد',
-  AUTH_REGISTER_SUCCESS: 'ورود با موفقیت انجام شد',
   AUTH_TIMER_SEC_MIN: `{min} دقیقه {sec} ثانیه`,
   AUTH_TIMER_MIN: `{min} دقیقه`,
   AUTH_TIMER_SEC: `{sec} ثانیه`,
-  AUTH_COMPLETE_PROFILE: `پروفایل شما با موفقیت ثبت شد.`,
-
-  // Global
-  RECEIVED_DATA: 'دیتا با موفقیت دریافت شد.',
-  UPDATED_DATA: 'دیتا با موفقیت به‌روزرسانی شد.',
+  AUTH_TOKEN_INVALID: 'توکن احراز هویت نامعتبر است.',
+  AUTH_USER_NOT_FOUND: 'حساب کاربری یافت نشد.',
+  AUTH_USER_BLOCKED: 'حساب کاربری مسدود شده است. لطفاً با پشتیبانی در ارتباط باشید.',
+  AUTH_USER_INACTIVE: 'حساب کاربری غیرفعال شده است. لطفاً با پشتیبانی در ارتباط باشید.',
+  AUTH_UNAUTHORIZED: 'دسترسی غیرمجاز است. لطفاً دوباره وارد شوید.',
+  AUTH_TOKEN_NOT_FOUND: 'توکن احراز هویت یافت نشد.',
+  AUTH_TOKEN_EXPIRED: 'توکن منقضی شده است.',
+  AUTH_TOKEN_NOT_ACTIVE: 'توکن هنوز قابل استفاده نیست.',
+  AUTH_TOKEN_SIGNATURE_INVALID: 'امضای توکن نامعتبر است.',
+  AUTH_TOKEN_STRUCTURE_INVALID: 'ساختار توکن معتبر نیست.',
+  AUTH_TOKEN_SIGNATURE_REQUIRED: 'امضای توکن الزامی است.',
+  AUTH_TOKEN_ALGORITHM_UNSUPPORTED: 'الگوریتم امضای توکن پشتیبانی نمی‌شود.',
+  AUTH_TOKEN_KID_INVALID: 'کلید امضا (kid) معتبر یا یافت‌شدنی نیست.',
+  AUTH_TOKEN_ISSUER_INVALID: 'مقدار issuer توکن معتبر نیست.',
+  AUTH_TOKEN_AUDIENCE_INVALID: 'مقدار audience توکن معتبر نیست.',
+  AUTH_TOKEN_SUBJECT_INVALID: 'مقدار subject توکن معتبر نیست.',
+  AUTH_TOKEN_VALIDATION_FAILED: 'اعتبارسنجی توکن ناموفق بود.',
 
   // User
   USER_ID_NOT_FOUND: 'کاربر با شناسه «{userId}» پیدا نشد.',
   USER_NOT_FOUND: 'کاربر پیدا نشد.',
   USER_REQUIRED_ID: 'شناسه کاربر الزامی است.',
+  USER_INVALID: 'کاربر معتبر نیست.',
+  USER_UNAUTHORIZED: 'دسترسی غیرمجاز است. لطفاً دوباره وارد شوید.',
+  USER_PERMISSION_DENIED: 'شما دسترسی لازم برای انجام این عملیات را ندارید.',
+  USER_PERMISSION_REQUIRED: 'شما دسترسی لازم برای انجام این عملیات را ندارید.',
 
   // Profile
   PROFILE_NOT_FOUND: 'پروفایل کاربر یافت نشد.',
-  PROFILE_UPDATED: 'پروفایل با موفقیت به‌روزرسانی شد.',
+  FILE_REQUIRED: 'ارسال یک فایل اجباری است.',
 
   // Permission
   PERMISSION_KEY_EXISTS: 'کلید پرمیشن «{1}» از قبل وجود دارد.',
@@ -41,6 +59,30 @@ export const MESSAGES_BASE = {
 
   // Media
   MEDIA_AVATAR_NOT_FOUND: 'آواتار انتخاب‌شده وجود ندارد.',
+
+  // Storage
+  STORAGE_MINIO_CONFIG_REQUIRED: 'تنظیمات MinIO برای «{key}» الزامی است.',
+  STORAGE_BUCKET_NAME_REQUIRED: 'نام Bucket الزامی است و باید یک رشته غیرخالی باشد.',
+  STORAGE_BUCKET_NAME_LENGTH_INVALID: 'نام Bucket باید بین {min} و {max} کاراکتر باشد.',
+  STORAGE_BUCKET_NAME_FORMAT_INVALID: 'فرمت نام Bucket نامعتبر است.',
+  STORAGE_BUCKET_NAME_CONSECUTIVE_DOTS_INVALID: 'نام Bucket نباید شامل نقطه‌های پشت سر هم باشد.',
+  STORAGE_OBJECT_NAME_REQUIRED: 'نام Object الزامی است و باید یک رشته غیرخالی باشد.',
+  STORAGE_FILE_REQUIRED: 'فایل در درخواست ارسالی الزامی است.',
+  STORAGE_OBJECT_NOT_FOUND: 'Object یافت نشد.',
+  STORAGE_OBJECT_INFO_NOT_FOUND: 'اطلاعات Object یافت نشد.',
+  STORAGE_FILE_NOT_EXIST: 'فایل وجود ندارد.',
+  STORAGE_OBJECT_REMOVE_FAILED: 'حذف Object با خطا مواجه شد.',
+  STORAGE_BUCKET_INVALID: 'Bucket ذخیره‌سازی نامعتبر است.',
+  STORAGE_MIMETYPE_REQUIRED: 'نوع فایل (MimeType) الزامی است.',
+  STORAGE_MIMETYPE_NOT_ALLOWED: 'MimeType "{mime}" مجاز نیست.',
+  STORAGE_CALLER_MIMETYPE_NOT_ALLOWED: 'MimeType ارسالی توسط درخواست‌دهنده "{mime}" مجاز نیست.',
+  STORAGE_MIMETYPE_NOT_MATCH_ALLOWED: 'MimeType با allowedMimeTypes مطابقت ندارد.',
+  STORAGE_MIMETYPE_FILE_NOT_MATCH: 'MimeType ارسال‌شده با MimeType واقعی فایل مطابقت ندارد.',
+  STORAGE_FILE_SIZE_INVALID: 'حجم فایل نامعتبر است.',
+  STORAGE_FILE_SIZE_EXCEEDED: 'حجم فایل بیشتر از حد مجاز است.',
+  STORAGE_FILE_SIZE_EXCEEDED_WITH_LIMIT: 'حجم فایل بیشتر از حد مجاز ({limit}MB) است.',
+  STORAGE_BUCKET_NOT_FOUND: 'Bucket مورد نظر یافت نشد.',
+  STORAGE_UPLOAD_OBJECT_NOT_FOUND_AFTER_UPLOAD: 'آپلود انجام نشد؛ فایل پس از آپلود یافت نشد.',
 
   // SMS
   SMS_MANAGER: 'خطایی در Sms Provider رخ داد.',
@@ -65,6 +107,10 @@ export const MESSAGES_BASE = {
   PRISMA_CODE_P2025: 'رکوردی یافت نشد که عملیات روی آن انجام شود.',
   PRISMA_CODE_P2022: 'مقدار وارد شده برای ستون {column} با محدودیت یکتایی تداخل دارد.',
   PRISMA_DEFAULT: 'خطای ناشناخته‌ای از Prisma دریافت شد.',
+
+  // Addresses
+  ADDRESSES_NOT_FOUNT: 'آدرس یافت نشد.',
+  ADDRESSES_ID_NOT_FOUNT: 'آدرس با شناسه «{id}» پیدا نشد.',
 
   // Location
   LOCATION_REQUIRED_LATITUDE: 'عرض جغرافیایی الزامی است.',
@@ -91,7 +137,7 @@ export const MESSAGES_BASE = {
   GIS_COORDINATE_INVALID_LATITUDE_PRECISION: 'دقت عرض جغرافیایی نمی‌تواند بیشتر از ۷ رقم اعشار باشد.',
   GIS_COORDINATE_INVALID_LONGITUDE_PRECISION: 'دقت طول جغرافیایی نمی‌تواند بیشتر از ۷ رقم اعشار باشد.',
 
-
   // Place
-  PLACE_NOT_FOUND: "مکان یافت نشد."
+  PLACE_NOT_FOUND: 'مکان یافت نشد.',
+  PLACE_ID_NOT_FOUND: 'مکان با شناسه «{id}» پیدا نشد.',
 } as const;

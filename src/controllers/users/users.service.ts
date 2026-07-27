@@ -44,7 +44,7 @@ export class UsersService {
       include: { profile: true },
     });
 
-    if (!user) throw new NotFoundException('کاربری با این شناسه یافت نشد.');
+    if (!user) throw new NotFoundException(MESSAGES.fmtNamed('USER_ID_NOT_FOUND', { userId: id }));
 
     return new StandardResponseDto({ data: user });
   }
@@ -74,10 +74,7 @@ export class UsersService {
     // گرفتن مجدد دیتای کاربر
     const user = await this.findOneWithUserId(newUser.id);
 
-    return new StandardResponseDto({
-      message: 'کاربر جدید اضافه شد.',
-      data: user!,
-    });
+    return new StandardResponseDto({ data: user! });
   }
   // #endregion
 
@@ -102,13 +99,10 @@ export class UsersService {
         include: { profile: true },
       });
 
-      return new StandardResponseDto({
-        message: 'اطلاعات کاربر به روز شد.',
-        data: updateUser,
-      });
+      return new StandardResponseDto({ data: updateUser });
     } catch (e: unknown) {
       if (e instanceof Error && 'code' in e && e.code === 'P2025') {
-        throw new NotFoundException('کاربر یافت نشد');
+        throw new NotFoundException(MESSAGES.USER_NOT_FOUND);
       }
       throw e;
     }

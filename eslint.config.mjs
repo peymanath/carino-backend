@@ -51,7 +51,6 @@ export default tseslint.config(
         },
       ],
 
-      // console در Nest معمولا بهتره آزاد باشد
       'no-console': 'off',
     },
   }
