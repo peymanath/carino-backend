@@ -1,24 +1,26 @@
 model PlaceLocation {
-    id           BigInt       @id @default(autoincrement())
-    placeId      BigInt
-    type         Int // EnumPlaceLocationType
-    latitude     Decimal      @db.Decimal(10, 7)
-    longitude    Decimal      @db.Decimal(10, 7)
-    isDeleted    Boolean      @default(false)
-    placeProfile PlaceProfile @relation(fields: [placeId], references: [id])
-    createdAt    DateTime     @default(now())
-    updatedAt    DateTime     @default(now()) @updatedAt
+    id               BigInt       @id @default(autoincrement())
+    placeId          BigInt
+    type             Int // EnumPlaceLocationType
+    supportedVehicle Int[]        @default([0]) // EnumVehicleType
+    latitude         Decimal      @db.Decimal(10, 7)
+    longitude        Decimal      @db.Decimal(10, 7)
+    isDeleted        Boolean      @default(false)
+    placeProfile     PlaceProfile @relation(fields: [placeId], references: [id])
+    createdAt        DateTime     @default(now())
+    updatedAt        DateTime     @default(now()) @updatedAt
 
-    @@index([latitude, longitude])
+    @@index([placeId])
     @@index([type])
-    @@index([type, placeId])
+    @@index([isDeleted])
+    @@index([type, isDeleted])
+    @@index([latitude, longitude])
     @@map("place_location")
 }
 
 model PlaceProfile {
     id          BigInt          @id @default(autoincrement())
     cityId      Int
-    type        Int // EnumPlaceLocationType
     title       String
     isDeleted   Boolean         @default(false)
     description String?
